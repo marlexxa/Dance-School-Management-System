@@ -10,9 +10,22 @@ import { PhoneModule } from './phone/phone.module';
 import { DepositModule } from './deposit/deposit.module';
 import { LessonModule } from './lesson/lesson.module';
 import { ScheduleModule } from './schedule/schedule.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { mongoUri } from './config/mongo';
 
 @Module({
-  imports: [UserModule, GroupModule, RolesModule, PaymentModule, PassModule, PhoneModule, DepositModule, LessonModule, ScheduleModule],
+  imports: [
+    UserModule,
+    GroupModule,
+    RolesModule,
+    PaymentModule,
+    PassModule,
+    PhoneModule,
+    DepositModule,
+    LessonModule,
+    ScheduleModule,
+    MongooseModule.forRoot(mongoUri),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
