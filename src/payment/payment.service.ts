@@ -1,26 +1,48 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { PaymentInterface } from './interfaces/payment.interface';
 
 @Injectable()
 export class PaymentService {
-  create(createPaymentDto: CreatePaymentDto) {
-    return 'This action adds a new payment';
+  constructor(@InjectModel('Payment') private readonly paymentModel: Model<PaymentInterface>) {}
+
+  async create(createPaymentDto: CreatePaymentDto) {
+    const payment = await new this.paymentModel(createPaymentDto);
+    return payment.save();
   }
 
-  findAll() {
-    return `This action returns all payment`;
+  async findAll() {
+    const payment = await this.paymentModel.find().exec();
+    if (!payment || !payment[0]) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return payment;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} payment`;
+  async findOne(id: string) {
+    const payment = await this.paymentModel.findOne({ _id: id }).exec();
+    if (!payment) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return payment;
   }
 
-  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    return `This action updates a #${id} payment`;
+  async update(id: number, updatePaymentDto: UpdatePaymentDto) {
+    const payment = await this.paymentModel.findByIdAndUpdate({ _id: id }, updatePaymentDto).exec();
+    if (!payment) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return payment;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
+  async remove(id: number) {
+    const payment = await this.paymentModel.deleteOne({ _id: id }).exec();
+    if (payment.deletedCount === 0) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return payment;
   }
 }

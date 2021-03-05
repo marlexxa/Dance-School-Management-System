@@ -6,6 +6,11 @@ export class User {
     type: String,
     required: true,
   })
+  id: string;
+  @Prop({
+    type: String,
+    required: true,
+  })
   name: string;
   @Prop({
     type: String,
