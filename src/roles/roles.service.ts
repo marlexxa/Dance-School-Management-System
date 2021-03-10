@@ -1,26 +1,48 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { RoleInterface } from './interfaces/role.interface';
 
 @Injectable()
 export class RolesService {
-  create(createRoleDto: CreateRoleDto) {
-    return 'This action adds a new role';
+  constructor(@InjectModel('Role') private readonly roleModel: Model<RoleInterface>) {}
+
+  async create(createRoleDto: CreateRoleDto) {
+    const role = await new this.roleModel(createRoleDto);
+    return role.save();
   }
 
-  findAll() {
-    return `This action returns all roles`;
+  async findAll() {
+    const roles = await this.roleModel.find().exec();
+    if (!roles || !roles[0]) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return roles;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} role`;
+  async findOne(id: string) {
+    const role = await this.roleModel.findOne({ _id: id }).exec();
+    if (!role) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return role;
   }
 
-  update(id: number, updateRoleDto: UpdateRoleDto) {
-    return `This action updates a #${id} role`;
+  async update(id: string, updateRoleDto: UpdateRoleDto) {
+    const role = await this.roleModel.findByIdAndUpdate({ _id: id }, updateRoleDto).exec();
+    if (!role) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return role;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} role`;
+  async remove(id: string) {
+    const role = await this.roleModel.deleteOne({ _id: id }).exec();
+    if (role.deletedCount === 0) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return role;
   }
 }

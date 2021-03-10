@@ -1,1 +1,4 @@
-export class CreateRoleDto {}
+export class CreateRoleDto {
+  role: string;
+  userID: string;
+}
