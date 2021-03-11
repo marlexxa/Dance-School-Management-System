@@ -1,1 +1,3 @@
-export class CreateScheduleDto {}
+export class CreateScheduleDto {
+  lessons: string[];
+}
