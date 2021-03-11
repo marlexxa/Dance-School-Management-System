@@ -3,7 +3,7 @@ import { CreateDepositDto } from './create-deposit.dto';
 
 export class UpdateDepositDto extends PartialType(CreateDepositDto) {
   id: string;
-  idUser: string;
+  userId: string;
   amount: number;
   isPaid: boolean;
 }

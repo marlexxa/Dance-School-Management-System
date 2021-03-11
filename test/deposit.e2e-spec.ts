@@ -30,27 +30,27 @@ describe('DEPOSIT', () => {
 
   const createDepositDTOS: CreateDepositDto[] = [
     {
-      idUser: '',
+      userId: '1',
       amount: 200,
       isPaid: true,
     },
     {
-      idUser: '',
+      userId: '2',
       amount: 0,
       isPaid: false,
     },
     {
-      idUser: '',
+      userId: '3',
       amount: 20,
       isPaid: true,
     },
     {
-      idUser: '',
+      userId: '4',
       amount: 40,
       isPaid: true,
     },
     {
-      idUser: '',
+      userId: '5',
       amount: 150,
       isPaid: true,
     },
@@ -64,7 +64,7 @@ describe('DEPOSIT', () => {
         .send(createDepositDTO)
         .expect(201)
         .expect(({ body }) => {
-          expect(body.idUser).toEqual(createDepositDTO.idUser);
+          expect(body.userId).toEqual(createDepositDTO.userId);
           expect(body.amount).toEqual(createDepositDTO.amount);
           expect(body.isPaid).toEqual(createDepositDTO.isPaid);
         });

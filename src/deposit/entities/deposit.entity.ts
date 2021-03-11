@@ -1,17 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
 
 @Schema()
 export class Deposit {
   @Prop({
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   })
-  id: string;
-  @Prop({
-    type: String,
-    required: true,
-  })
-  idUser: string;
+  userId: string;
   @Prop({
     type: Number,
     required: true,

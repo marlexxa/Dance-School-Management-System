@@ -1,5 +1,5 @@
 export class CreateDepositDto {
-  idUser: string;
+  userId: string;
   amount: number;
   isPaid: boolean;
 }
