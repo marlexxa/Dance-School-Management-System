@@ -23,6 +23,7 @@ export class PhoneService {
     return phone.save();
   }
   async findAll() {
+    //const phones = await this.phoneModel.find().populate('user', '-password -gender').exec();
     const phones = await this.phoneModel.find().exec();
     if (!phones || !phones[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
@@ -31,6 +32,7 @@ export class PhoneService {
   }
 
   async findOne(id: string) {
+    //const phone = await this.phoneModel.findOne({ _id: id }).populate('user', '-password -gender').exec();
     const phone = await this.phoneModel.findOne({ _id: id }).exec();
     if (!phone) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
@@ -38,6 +40,7 @@ export class PhoneService {
     return phone;
   }
   async findOneByUser(userId: string) {
+    //const phone = await this.phoneModel.findOne({ userId: userId }).populate('user', '-password -gender').exec();
     const phone = await this.phoneModel.find({ userId: userId }).exec();
     if (!phone) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
