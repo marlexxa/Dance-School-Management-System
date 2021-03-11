@@ -1,4 +1,6 @@
-export class CreateGroupDto {
+import { Document } from 'mongoose';
+
+export interface UserInterface extends Document {
   danceType: string;
   advanceLevel: string;
   teacherId: string[];

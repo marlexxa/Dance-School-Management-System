@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
-
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { GroupInterface } from './interfaces/group.interface';
 @Injectable()
 export class GroupService {
-  create(createGroupDto: CreateGroupDto) {
-    return 'This action adds a new group';
+  constructor(@InjectModel('Group') private readonly groupModel: Model<GroupInterface>) {}
+
+  async create(createGroupDto: CreateGroupDto) {
+    const group = await new this.groupModel(createGroupDto);
+    return group.save();
   }
 
-  findAll() {
-    return `This action returns all group`;
+  async findAll() {
+    const groups = await this.groupModel.find().exec();
+    if (!groups || !groups[0]) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return groups;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} group`;
+  async findOne(id: string) {
+    const group = await this.groupModel.findOne({ _id: id }).exec();
+    if (!group) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return group;
   }
 
-  update(id: number, updateGroupDto: UpdateGroupDto) {
-    return `This action updates a #${id} group`;
+  async update(id: string, updateGroupDto: UpdateGroupDto) {
+    const group = await this.groupModel.findByIdAndUpdate({ _id: id }, updateGroupDto).exec();
+    if (!group) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} group`;
+  async remove(id: string) {
+    const group = await this.groupModel.deleteOne({ _id: id }).exec();
+    if (group.deletedCount === 0) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return group;
   }
 }
