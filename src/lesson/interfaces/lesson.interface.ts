@@ -1,4 +1,7 @@
-export class CreateLessonDto {
+/* eslint-disable prettier/prettier */
+import { Document } from 'mongoose';
+
+export interface LessonInterface extends Document {
   date: Date;
   teacherId: number;
   groupId: number;
