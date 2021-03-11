@@ -11,6 +11,12 @@ import { PhoneSchema } from './entities/phone.entity';
         schema: PhoneSchema,
       },
     ]),
+    // MongooseModule.forFeature([
+    //   {
+    //     name: 'User',
+    //     schema: UserSchema,
+    //   },
+    // ]),
   ],
   controllers: [PhoneController],
   providers: [PhoneService],
