@@ -1,7 +1,7 @@
 import { UserInterface } from '../../user/interfaces/user.interface';
 
 export class CreatePassDto {
-  user: String;
+  user: UserInterface;
   //group: String;
   startDate: Date;
   endDate: Date;

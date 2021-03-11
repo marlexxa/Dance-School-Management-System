@@ -10,10 +10,8 @@ import { UserInterface } from '../user/interfaces/user.interface';
 export class PassService {
   constructor(
     @InjectModel('Pass') private readonly passModel: Model<PassInterface>,
-    @InjectModel('User') private readonly userModel: Model<UserInterface>,
-  ) //@InjectModel('Group') private  readonly groupModel: Model<GroupInterface>
-
-  {}
+    @InjectModel('User') private readonly userModel: Model<UserInterface>, //@InjectModel('Group') private  readonly groupModel: Model<GroupInterface>
+  ) {}
 
   async findAll(): Promise<PassInterface[]> {
     const passes = await this.passModel.find().populate('user', '-password -gender').exec();
@@ -35,7 +33,7 @@ export class PassService {
   async findAllByUserID(userId: string): Promise<PassInterface[]> {
     const passes = await this.passModel.find().populate('user', '-password -gender').exec();
     let filtered = passes.filter((pass) => {
-      return pass.user == userId;
+      return pass.user._id == userId;
     });
     if (!filtered || !filtered[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
