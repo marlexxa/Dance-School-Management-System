@@ -14,7 +14,6 @@ export class PhoneService {
     return phone.save();
   }
   async findAll() {
-    console.log('FIND ALL');
     const phones = await this.phoneModel.find().exec();
     if (!phones || !phones[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
@@ -23,7 +22,6 @@ export class PhoneService {
   }
 
   async findOne(id: string) {
-    console.log('FIND ONE');
     const phone = await this.phoneModel.findOne({ _id: id }).exec();
     if (!phone) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
