@@ -8,9 +8,17 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class PhoneService {
+  // to dodam do konstruktora gdy polacze to z userem @InjectModel('User') private readonly userModel: Model<UserInterface>,
   constructor(@InjectModel('Phone') private readonly phoneModel: Model<PhoneInterface>) {}
 
   async create(createPhoneDto: CreatePhoneDto) {
+    // const user = await this.userModel.findById(createPassDto.user).exec();
+    // if (user) {
+    //   const pass = await new this.passModel(createPassDto);
+    //   return pass.save();
+    // } else {
+    //   throw new HttpException('User or Group Not Found', HttpStatus.NOT_FOUND);
+    // }
     const phone = await new this.phoneModel(createPhoneDto);
     return phone.save();
   }
