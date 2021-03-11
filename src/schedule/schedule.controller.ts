@@ -22,6 +22,11 @@ export class ScheduleController {
     return this.scheduleService.findOne(id);
   }
 
+  @Get('lesson/:id')
+  findOneByLesson(@Param('id') id: string) {
+    return this.scheduleService.findOneByLesson(id);
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateScheduleDto: UpdateScheduleDto) {
     return this.scheduleService.update(id, updateScheduleDto);

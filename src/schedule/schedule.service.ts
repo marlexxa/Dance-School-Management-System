@@ -30,6 +30,14 @@ export class ScheduleService {
     return schedule;
   }
 
+  async findOneByLesson(id: string) {
+    const schedule = await this.scheduleModel.findOne({ _id: id }).exec();
+    if (!schedule) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return schedule;
+  }
+
   async update(id: string, updateScheduleDto: UpdateScheduleDto) {
     const schedule = await this.scheduleModel.findByIdAndUpdate({ _id: id }, updateScheduleDto).exec();
     if (!schedule) {
