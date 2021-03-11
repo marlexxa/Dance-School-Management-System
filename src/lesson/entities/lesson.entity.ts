@@ -7,14 +7,16 @@ export class Lesson {
     type: String,
     required: true,
   })
-  date: string;
+  date: Date;
   @Prop({
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   })
   teacherId: string;
   @Prop({
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Group',
     required: true,
   })
   groupId: string;
@@ -24,25 +26,26 @@ export class Lesson {
   })
   phoneNumber: string;
   @Prop({
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   })
   students: [];
   @Prop({
-    type: String,
+    type: Number,
     required: true,
   })
   priceInCash: number;
   @Prop({
-    type: String,
+    type: Date,
     required: true,
   })
-  startTime: string;
+  startTime: Date;
   @Prop({
-    type: String,
+    type: Date,
     required: true,
   })
-  endTime: string;
+  endTime: Date;
 }
 
 export const LessonSchema = SchemaFactory.createForClass(Lesson);

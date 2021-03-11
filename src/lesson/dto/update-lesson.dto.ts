@@ -6,7 +6,7 @@ export class UpdateLessonDto extends PartialType(CreateLessonDto) {
   date: Date;
   teacherId: number;
   groupId: number;
-  students: string;
+  students: string[];
   priceInCash: number;
   startTime: string;
   endTime: string;

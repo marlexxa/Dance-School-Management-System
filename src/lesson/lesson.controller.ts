@@ -32,3 +32,5 @@ export class LessonController {
     return this.lessonService.remove(id);
   }
 }
+
+// brak endpontów na wyszukiwanie po grupie, teacherze, studencie , dacie
