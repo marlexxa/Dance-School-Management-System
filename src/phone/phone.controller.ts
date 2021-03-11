@@ -13,22 +13,22 @@ export class PhoneController {
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.phoneService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.phoneService.findOne(+id);
+    return this.phoneService.findOne(id);
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updatePhoneDto: UpdatePhoneDto) {
-    return this.phoneService.update(+id, updatePhoneDto);
+    return this.phoneService.update(id, updatePhoneDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.phoneService.remove(+id);
+    return this.phoneService.remove(id);
   }
 }

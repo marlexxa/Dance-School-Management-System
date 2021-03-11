@@ -1,26 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { UpdatePhoneDto } from './dto/update-phone.dto';
+import { PhoneInterface } from './interfaces/phone.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PhoneService {
-  create(createPhoneDto: CreatePhoneDto) {
-    return 'This action adds a new phone';
+  constructor(@InjectModel('Phone') private readonly phoneModel: Model<PhoneInterface>) {}
+
+  async create(createPhoneDto: CreatePhoneDto) {
+    const phone = await new this.phoneModel(createPhoneDto);
+    return phone.save();
+  }
+  async findAll() {
+    console.log('FIND ALL');
+    const phones = await this.phoneModel.find().exec();
+    if (!phones || !phones[0]) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return phones;
   }
 
-  findAll() {
-    return `This action returns all phone`;
+  async findOne(id: string) {
+    console.log('FIND ONE');
+    const phone = await this.phoneModel.findOne({ _id: id }).exec();
+    if (!phone) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return phone;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} phone`;
+  async update(id: string, updatePhoneDto: UpdatePhoneDto) {
+    const phone = await this.phoneModel.findByIdAndUpdate({ _id: id }, updatePhoneDto).exec();
+    if (!phone) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return phone;
   }
 
-  update(id: number, updatePhoneDto: UpdatePhoneDto) {
-    return `This action updates a #${id} phone`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} phone`;
+  async remove(id: string) {
+    const phone = await this.phoneModel.deleteOne({ _id: id }).exec();
+    if (phone.deletedCount === 0) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return phone;
   }
 }
