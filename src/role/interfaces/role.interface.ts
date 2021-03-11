@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
+import { RoleType } from '../enum/role.enum';
 
 export interface RoleInterface extends Document {
-  role: string;
+  roleType: RoleType;
   userID: string;
 }

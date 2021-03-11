@@ -1,4 +1,6 @@
+import { RoleType } from '../enum/role.enum';
+
 export class CreateRoleDto {
-  role: string;
+  roleType: RoleType;
   userID: string;
 }
