@@ -6,6 +6,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
 
+beforeAll(async () => {
+  await mongoose.connect(database);
+  await mongoose.connection.db.dropDatabase();
+});
+
+afterAll(async (done) => {
+  await mongoose.disconnect(done);
+});
+
 describe('USER', () => {
   let app: INestApplication;
   let users;
@@ -18,15 +27,6 @@ describe('USER', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-  });
-
-  beforeAll(async () => {
-    await mongoose.connect(database);
-    await mongoose.connection.db.dropDatabase();
-  });
-
-  afterAll(async (done) => {
-    await mongoose.disconnect(done);
   });
 
   const createUserDTOS: CreateUserDto[] = [
