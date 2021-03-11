@@ -21,6 +21,10 @@ export class PhoneController {
   findOne(@Param('id') id: string) {
     return this.phoneService.findOne(id);
   }
+  @Get('user/:userId')
+  findAllByUser(@Param('userId') id: string) {
+    return this.phoneService.findOneByUser(id);
+  }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updatePhoneDto: UpdatePhoneDto) {

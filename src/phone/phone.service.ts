@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { UpdatePhoneDto } from './dto/update-phone.dto';
@@ -28,7 +29,13 @@ export class PhoneService {
     }
     return phone;
   }
-
+  async findOneByUser(userId: string) {
+    const phone = await this.phoneModel.find({ userId: userId }).exec();
+    if (!phone) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return phone;
+  }
   async update(id: string, updatePhoneDto: UpdatePhoneDto) {
     const phone = await this.phoneModel.findByIdAndUpdate({ _id: id }, updatePhoneDto).exec();
     if (!phone) {
