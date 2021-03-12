@@ -23,8 +23,8 @@ export class ScheduleController {
   }
 
   @Get('lesson/:id')
-  findOneByLesson(@Param('id') id: string) {
-    return this.scheduleService.findOneByLesson(id);
+  findScheduleByLesson(@Param('id') id: string) {
+    return this.scheduleService.findScheduleByLesson(id);
   }
 
   @Put(':id')

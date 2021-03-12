@@ -70,6 +70,16 @@ describe('USER', () => {
       });
   });
 
+  it('should find schedule by lessonId', async () => {
+    return request(app.getHttpServer())
+      .get(`lesson/${schedules[0].lessons[0]}`)
+      .set('Accept', 'application/json')
+      .expect(201)
+      .expect(({ body }) => {
+        expect(body.schedule.lessons).toContain(`${schedules[0].lessons[0]}`);
+      });
+  });
+
   it('should update first Schedule', async () => {
     return request(app.getHttpServer())
       .put(`/schedules/${schedules[0]._id}`)
