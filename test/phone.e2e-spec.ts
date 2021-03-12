@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
@@ -100,5 +101,8 @@ describe('USER', () => {
 
   it('should delete phone', async () => {
     return request(app.getHttpServer()).delete(`/phone/${fetchedPhones[0]._id}`).set('Accept', 'application/json').expect(200);
+  });
+  it('should delete last User', async () => {
+    return request(app.getHttpServer()).delete(`/user/${createdUser._id}`).set('Accept', 'application/json').expect(200);
   });
 });
