@@ -7,9 +7,9 @@ import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
 import { CreatePhoneDto } from 'src/phone/dto/create-phone.dto';
 
-describe('DEPOSIT', () => {
+describe('PHONES', () => {
   let app: INestApplication;
-  let deposits;
+  let phones;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -53,9 +53,9 @@ describe('DEPOSIT', () => {
   ];
 
   CreatePhoneDTOS.map((CreatePhoneDto) => {
-    it('should create deposit', async () => {
+    it('should create phone', async () => {
       return request(app.getHttpServer())
-        .post('/deposit')
+        .post('/phone')
         .set('Accept', 'application/json')
         .send(CreatePhoneDto)
         .expect(201)
@@ -66,34 +66,33 @@ describe('DEPOSIT', () => {
     });
   });
 
-  it('should get allDeposits', async () => {
+  it('should get allphones', async () => {
     return request(app.getHttpServer())
-      .get('/deposit')
+      .get('/phone')
       .set('Accept', 'application/json')
       .expect(200)
       .expect(({ body }) => {
         expect(body.length).toEqual(5);
-        deposits = body;
+        phones = body;
       });
   });
 
-  it('should update first deposit', async () => {
+  it('should update first phone', async () => {
+    request(app.getHttpServer()).put(`/phone/${phones[0]._id}`).set('Accept', 'application/json').send({
+      userId: '6',
+      phoneNumber: '666666666',
+    });
     return request(app.getHttpServer())
-      .put(`/deposit/${deposits[0]._id}`)
-      .set('Accept', 'application/json')
-      .send({
-        userId: '6',
-        phoneNumber: '666666666',
-      })
+      .get(`/phone/${phones[0]._id}`)
       .expect(({ body }) => {
         expect(body.userId).toEqual('6');
         expect(body.phoneNumber).toEqual('666666666');
       });
   });
 
-  it('should delete last deposit', async () => {
+  it('should delete last phone', async () => {
     return request(app.getHttpServer())
-      .delete(`/deposit/${deposits[deposits.length - 1]._id}`)
+      .delete(`/phone/${phones[phones.length - 1]._id}`)
       .set('Accept', 'application/json')
       .expect(200);
   });
