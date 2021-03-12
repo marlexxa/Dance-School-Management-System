@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { Document } from 'mongoose';
-
+import { UserInterface } from '../../user/interfaces/user.interface';
 export interface PhoneInterface extends Document {
-  readonly id?: string;
-  readonly userId: string;
-  readonly phoneNumber: string;
+  id?: string;
+  user: UserInterface;
+  phoneNumber: string;
 }

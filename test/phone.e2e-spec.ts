@@ -1,99 +1,104 @@
-/* eslint-disable prettier/prettier */
-import * as mongoose from 'mongoose';
-import { database } from './constants';
-import * as request from 'supertest';
+import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
-import { INestApplication } from '@nestjs/common';
-import { CreatePhoneDto } from 'src/phone/dto/create-phone.dto';
+import * as mongoose from 'mongoose';
+import { database } from './constants';
+import { CreateUserDto } from '../src/user/dto/create-user.dto';
+import * as request from 'supertest';
+import { CreatePhoneDto } from '../src/phone/dto/create-phone.dto';
 
-describe('PHONES', () => {
+beforeAll(async () => {
+  await mongoose.connect(database);
+  await mongoose.connection.db.dropDatabase();
+});
+
+afterAll(async (done) => {
+  await mongoose.disconnect(done);
+});
+
+describe('USER', () => {
   let app: INestApplication;
-  let phones;
+  let createdUser;
+  let createdPhone;
+  let fetchedPhones;
 
-  beforeEach(async () => {
+  const createUserDto: CreateUserDto = {
+    name: 'JANUSZ',
+    surname: 'GRZYWACZ',
+    mail: 'jon.doe@mail.com',
+    password: 'password',
+    gender: 'male',
+  };
+
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    await request(app.getHttpServer())
+      .post('/user')
+      .set('Accept', 'application/json')
+      .send(createUserDto)
+      .expect(({ body }) => {
+        createdUser = body;
+      });
   });
 
-  beforeAll(async () => {
-    await mongoose.connect(database);
-    await mongoose.connection.db.dropDatabase();
+  it('should create phone to existing user', async () => {
+    return request(app.getHttpServer())
+      .post('/phone')
+      .set('Accept', 'application/json')
+      .send({
+        user: createdUser._id,
+        phoneNumber: '123456789',
+      })
+      .expect(201)
+      .expect(({ body }) => {
+        createdPhone = body;
+        expect(body.user).toEqual(createdUser._id);
+      });
   });
 
-  afterAll(async (done) => {
-    await mongoose.disconnect(done);
+  it('should not create pass to not existing user', async () => {
+    return request(app.getHttpServer())
+      .post('/phone')
+      .set('Accept', 'application/json')
+      .send({
+        user: 'someVALUE',
+        phoneNumber: '123456789',
+      })
+      .expect(500);
   });
 
-  const CreatePhoneDTOS: CreatePhoneDto[] = [
-    {
-      userId: '1',
-      phoneNumber: '123456789',
-    },
-    {
-      userId: '2',
-      phoneNumber: '987654321',
-    },
-    {
-      userId: '3',
-      phoneNumber: '111111111',
-    },
-    {
-      userId: '4',
-      phoneNumber: '222222222',
-    },
-    {
-      userId: '5',
-      phoneNumber: '333333333',
-    },
-  ];
-
-  CreatePhoneDTOS.map((CreatePhoneDto) => {
-    it('should create phone', async () => {
-      return request(app.getHttpServer())
-        .post('/phone')
-        .set('Accept', 'application/json')
-        .send(CreatePhoneDto)
-        .expect(201)
-        .expect(({ body }) => {
-          expect(body.userId).toEqual(CreatePhoneDto.userId);
-          expect(body.phoneNumber).toEqual(CreatePhoneDto.phoneNumber);
-        });
-    });
-  });
-
-  it('should get allphones', async () => {
+  it('should get allPhones', async () => {
     return request(app.getHttpServer())
       .get('/phone')
       .set('Accept', 'application/json')
       .expect(200)
       .expect(({ body }) => {
-        expect(body.length).toEqual(5);
-        phones = body;
+        expect(body.length).toEqual(1);
+        fetchedPhones = body;
       });
   });
 
-  it('should update first phone', async () => {
-    request(app.getHttpServer()).put(`/phone/${phones[0]._id}`).set('Accept', 'application/json').send({
-      userId: '6',
-      phoneNumber: '666666666',
-    });
+  it('should update phone', async () => {
     return request(app.getHttpServer())
-      .get(`/phone/${phones[0]._id}`)
-      .expect(({ body }) => {
-        expect(body.userId).toEqual('6');
-        expect(body.phoneNumber).toEqual('666666666');
-      });
-  });
-
-  it('should delete last phone', async () => {
-    return request(app.getHttpServer())
-      .delete(`/phone/${phones[phones.length - 1]._id}`)
+      .put(`/phone/${fetchedPhones[0]._id}`)
       .set('Accept', 'application/json')
-      .expect(200);
+      .send({
+        user: createdUser._id,
+        phoneNumber: '111111111',
+      })
+      .expect(({ body }) => {
+        createdPhone = body;
+        expect(body.phoneNumber).toEqual('111111111');
+      });
+  });
+
+  it('should delete phone', async () => {
+    return request(app.getHttpServer()).delete(`/phone/${fetchedPhones[0]._id}`).set('Accept', 'application/json').expect(200);
   });
 });

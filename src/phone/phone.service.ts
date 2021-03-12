@@ -3,50 +3,54 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { UpdatePhoneDto } from './dto/update-phone.dto';
 import { PhoneInterface } from './interfaces/phone.interface';
+import { UserInterface } from '../user/interfaces/user.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 @Injectable()
 export class PhoneService {
   // to dodam do konstruktora gdy polacze to z userem @InjectModel('User') private readonly userModel: Model<UserInterface>,
-  constructor(@InjectModel('Phone') private readonly phoneModel: Model<PhoneInterface>) {}
+  constructor(
+    @InjectModel('Phone') private readonly phoneModel: Model<PhoneInterface>,
+    @InjectModel('User') private readonly userModel: Model<UserInterface>,
+  ) {}
 
   async create(createPhoneDto: CreatePhoneDto) {
-    // const user = await this.userModel.findById(createPassDto.user).exec();
-    // if (user) {
-    //   const pass = await new this.passModel(createPassDto);
-    //   return pass.save();
-    // } else {
-    //   throw new HttpException('User or Group Not Found', HttpStatus.NOT_FOUND);
-    // }
-    const phone = await new this.phoneModel(createPhoneDto);
-    return phone.save();
+    const user = await this.userModel.findById(createPhoneDto.user).exec();
+    if (user) {
+      const pass = await new this.phoneModel(createPhoneDto);
+      return pass.save();
+    } else {
+      throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+    }
   }
-  async findAll() {
-    //const phones = await this.phoneModel.find().populate('user', '-password -gender').exec();
-    const phones = await this.phoneModel.find().exec();
+  async findAll(): Promise<PhoneInterface[]> {
+    const phones = await this.phoneModel.find().populate('user', '-password -gender').exec();
+
     if (!phones || !phones[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
     return phones;
   }
 
-  async findOne(id: string) {
-    //const phone = await this.phoneModel.findOne({ _id: id }).populate('user', '-password -gender').exec();
-    const phone = await this.phoneModel.findOne({ _id: id }).exec();
+  async findByID(id: string): Promise<PhoneInterface> {
+    const phone = await this.phoneModel.findOne({ _id: id }).populate('user', '-password -gender').exec();
     if (!phone) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
     return phone;
   }
-  async findOneByUser(userId: string) {
-    //const phone = await this.phoneModel.findOne({ userId: userId }).populate('user', '-password -gender').exec();
-    const phone = await this.phoneModel.find({ userId: userId }).exec();
-    if (!phone) {
+  async findAllByUserID(userId: string): Promise<PhoneInterface[]> {
+    const phones = await this.phoneModel.find().populate('user', '-password -gender').exec();
+    let filtered = phones.filter((pass) => {
+      return pass.user._id == userId;
+    });
+    if (!filtered || !filtered[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
-    return phone;
+    return filtered;
   }
+
   async update(id: string, updatePhoneDto: UpdatePhoneDto) {
     const phone = await this.phoneModel.findByIdAndUpdate({ _id: id }, updatePhoneDto).exec();
     if (!phone) {

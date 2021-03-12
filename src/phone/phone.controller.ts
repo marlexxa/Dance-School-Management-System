@@ -19,11 +19,11 @@ export class PhoneController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.phoneService.findOne(id);
+    return this.phoneService.findByID(id);
   }
-  @Get('user/:userId')
-  findAllByUser(@Param('userId') id: string) {
-    return this.phoneService.findOneByUser(id);
+  @Get('user/:user')
+  findAllByUser(@Param('user') id: string) {
+    return this.phoneService.findAllByUserID(id);
   }
 
   @Put(':id')
