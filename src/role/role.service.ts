@@ -7,7 +7,7 @@ import { RoleInterface } from './interfaces/role.interface';
 import { UserInterface } from '../user/interfaces/user.interface';
 
 @Injectable()
-export class RolesService {
+export class RoleService {
   constructor(
     @InjectModel('Role') private readonly roleModel: Model<RoleInterface>,
     @InjectModel('User') private readonly userModel: Model<UserInterface>,
