@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
 
 @Schema()
 export class Group {
@@ -13,25 +14,28 @@ export class Group {
   })
   advanceLevel: string;
   @Prop({
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   })
-  teacherId: string[];
+  teachers: string[];
   @Prop({
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   })
-  studentId: string[];
+  students: string[];
   @Prop({
     type: Number,
     required: true,
   })
   maxAmount: number;
   @Prop({
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Schedule',
     required: true,
   })
-  scheduleId: number;
+  scheduleID: number;
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

@@ -22,6 +22,26 @@ export class GroupController {
     return this.groupService.findOne(id);
   }
 
+  @Get(':advanceLevel')
+  findAllByAdvanceLevel(@Param('advanceLevel') advanceLevel: string) {
+    return this.groupService.findAllByAdvanceLevel(advanceLevel);
+  }
+
+  @Get(':danceType')
+  findAllByDanceType(@Param('danceType') danceType: string) {
+    return this.groupService.findAllByDanceType(danceType);
+  }
+
+  @Get(':teacherId')
+  findAllByTeacherId(@Param('teacherId') teachers: string) {
+    return this.groupService.findAllByTeacherId(teachers);
+  }
+
+  // @Get(':studentId')
+  // findAllByStudentId(@Param('studentId') students: string) {
+  //   return this.groupService.findAllByStudentId(students);
+  // }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
     return this.groupService.update(id, updateGroupDto);
@@ -32,3 +52,4 @@ export class GroupController {
     return this.groupService.remove(id);
   }
 }
+// a reszta endpointów - > wyszukiwanie po teacherze, userze , po type tańca i levelu

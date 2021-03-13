@@ -1,10 +1,10 @@
 import { Document } from 'mongoose';
-
-export interface UserInterface extends Document {
+import { UserInterface } from 'src/user/interfaces/user.interface';
+export interface GroupInterface extends Document {
   danceType: string;
   advanceLevel: string;
-  teacherId: string[];
-  studentId: string[];
+  teachers: UserInterface[];
+  students: UserInterface[];
   maxAmount: number;
-  scheduleId: number;
+  scheduleID: number;
 }
