@@ -11,10 +11,6 @@ export const PhoneTest = () => {
     let app: INestApplication;
     let createdUser;
     let fetchedPhones;
-    beforeAll(async () => {
-      await mongoose.connect(database);
-      await mongoose.connection.db.dropDatabase();
-    });
 
     afterAll(async (done) => {
       await mongoose.connection.db.dropDatabase();
@@ -35,7 +31,8 @@ export const PhoneTest = () => {
 
       app = moduleFixture.createNestApplication();
       await app.init();
-
+      await mongoose.connect(database);
+      await mongoose.connection.db.dropDatabase();
       await request(app.getHttpServer())
         .post('/users')
         .set('Accept', 'application/json')
