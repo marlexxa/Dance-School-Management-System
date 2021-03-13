@@ -5,6 +5,7 @@ import { AppModule } from './../src/app.module';
 import { PassTests } from './passTests';
 import { UserTest } from './userTests';
 import { RoleTests } from './roleTests';
+import { PhoneTest } from './phoneTests';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -25,4 +26,5 @@ describe('AppController (e2e)', () => {
   UserTest();
   PassTests();
   RoleTests();
+  PhoneTest();
 });
