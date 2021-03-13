@@ -6,7 +6,6 @@ import * as mongoose from 'mongoose';
 import { database } from './constants';
 import { CreateUserDto } from '../src/user/dto/create-user.dto';
 import * as request from 'supertest';
-import { CreatePhoneDto } from '../src/phone/dto/create-phone.dto';
 
 beforeAll(async () => {
   await mongoose.connect(database);
@@ -17,10 +16,9 @@ afterAll(async (done) => {
   await mongoose.disconnect(done);
 });
 
-describe('USER', () => {
+describe('PHONE', () => {
   let app: INestApplication;
   let createdUser;
-  let createdPhone;
   let fetchedPhones;
 
   const createUserDto: CreateUserDto = {
@@ -50,7 +48,7 @@ describe('USER', () => {
 
   it('should create phone to existing user', async () => {
     return request(app.getHttpServer())
-      .post('/phone')
+      .post('/phones')
       .set('Accept', 'application/json')
       .send({
         user: createdUser._id,
@@ -58,14 +56,13 @@ describe('USER', () => {
       })
       .expect(201)
       .expect(({ body }) => {
-        createdPhone = body;
         expect(body.user).toEqual(createdUser._id);
       });
   });
 
   it('should not create pass to not existing user', async () => {
     return request(app.getHttpServer())
-      .post('/phone')
+      .post('/phones')
       .set('Accept', 'application/json')
       .send({
         user: 'someVALUE',
@@ -76,7 +73,7 @@ describe('USER', () => {
 
   it('should get allPhones', async () => {
     return request(app.getHttpServer())
-      .get('/phone')
+      .get('/phones')
       .set('Accept', 'application/json')
       .expect(200)
       .expect(({ body }) => {
@@ -87,20 +84,19 @@ describe('USER', () => {
 
   it('should update phone', async () => {
     return request(app.getHttpServer())
-      .put(`/phone/${fetchedPhones[0]._id}`)
+      .put(`/phones/${fetchedPhones[0]._id}`)
       .set('Accept', 'application/json')
       .send({
         user: createdUser._id,
         phoneNumber: '111111111',
       })
       .expect(({ body }) => {
-        createdPhone = body;
         expect(body.phoneNumber).toEqual('111111111');
       });
   });
 
   it('should delete phone', async () => {
-    return request(app.getHttpServer()).delete(`/phone/${fetchedPhones[0]._id}`).set('Accept', 'application/json').expect(200);
+    return request(app.getHttpServer()).delete(`/phones/${fetchedPhones[0]._id}`).set('Accept', 'application/json').expect(200);
   });
   it('should delete last User', async () => {
     return request(app.getHttpServer()).delete(`/user/${createdUser._id}`).set('Accept', 'application/json').expect(200);
