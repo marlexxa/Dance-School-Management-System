@@ -4,6 +4,7 @@ import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { PassTests } from './passTests';
 import { UserTest } from './userTests';
+import { RoleTests } from './roleTests';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -23,4 +24,5 @@ describe('AppController (e2e)', () => {
 
   UserTest();
   PassTests();
+  RoleTests();
 });
