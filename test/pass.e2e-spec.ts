@@ -1,25 +1,14 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../dist/app.module';
+import { AppModule } from '../src/app.module';
 import * as mongoose from 'mongoose';
 import { database } from './constants';
-import { CreateUserDto } from '../dist/user/dto/create-user.dto';
 import * as request from 'supertest';
-import { CreatePassDto } from '../dist/pass/dto/create-pass.dto';
+import { CreateUserDto } from '../src/user/dto/create-user.dto';
 
-beforeAll(async () => {
-  await mongoose.connect(database);
-  await mongoose.connection.db.dropDatabase();
-});
-
-afterAll(async (done) => {
-  await mongoose.disconnect(done);
-});
-
-describe('USER', () => {
+describe('PASS', () => {
   let app: INestApplication;
   let createdUser;
-  let createdPass;
   let fetchedPasses;
 
   const createUserDto: CreateUserDto = {
@@ -38,8 +27,12 @@ describe('USER', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
 
+    await mongoose.connect(database);
+    await mongoose.connection.db.dropDatabase();
+    console.log('DATABASE CLEANED');
+
     await request(app.getHttpServer())
-      .post('/user')
+      .post('/users')
       .set('Accept', 'application/json')
       .send(createUserDto)
       .expect(({ body }) => {
@@ -47,9 +40,15 @@ describe('USER', () => {
       });
   });
 
-  it('should create pass to existing user', async () => {
+  afterAll(async (done) => {
+    await mongoose.connection.db.dropDatabase();
+    console.log('DATABASE CLEANED');
+    await mongoose.disconnect(done);
+  });
+
+  test('should create pass to existing user', async () => {
     return request(app.getHttpServer())
-      .post('/pass')
+      .post('/passes')
       .set('Accept', 'application/json')
       .send({
         user: createdUser._id,
@@ -60,14 +59,13 @@ describe('USER', () => {
       })
       .expect(201)
       .expect(({ body }) => {
-        createdPass = body;
         expect(body.user).toEqual(createdUser._id);
       });
   });
 
-  it('should not create pass to not existing user', async () => {
+  test('should not create pass to not existing user', async () => {
     return request(app.getHttpServer())
-      .post('/pass')
+      .post('/passes')
       .set('Accept', 'application/json')
       .send({
         user: 'someVALUE',
@@ -79,9 +77,9 @@ describe('USER', () => {
       .expect(500);
   });
 
-  it('should get allPasses', async () => {
+  test('should get allPasses', async () => {
     return request(app.getHttpServer())
-      .get('/pass')
+      .get('/passes')
       .set('Accept', 'application/json')
       .expect(200)
       .expect(({ body }) => {
@@ -90,9 +88,9 @@ describe('USER', () => {
       });
   });
 
-  it('should update pass', async () => {
+  test('should update pass', async () => {
     return request(app.getHttpServer())
-      .put(`/pass/${fetchedPasses[0]._id}`)
+      .put(`/passes/${fetchedPasses[0]._id}`)
       .set('Accept', 'application/json')
       .send({
         user: createdUser._id,
@@ -106,7 +104,7 @@ describe('USER', () => {
       });
   });
 
-  it('should delete pass', async () => {
-    return request(app.getHttpServer()).delete(`/pass/${fetchedPasses[0]._id}`).set('Accept', 'application/json').expect(200);
+  test('should delete pass', async () => {
+    return request(app.getHttpServer()).delete(`/passes/${fetchedPasses[0]._id}`).set('Accept', 'application/json').expect(200);
   });
 });

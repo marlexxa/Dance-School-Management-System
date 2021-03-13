@@ -6,27 +6,28 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
 
-beforeAll(async () => {
-  await mongoose.connect(database);
-  await mongoose.connection.db.dropDatabase();
-});
-
-afterAll(async (done) => {
-  await mongoose.disconnect(done);
-});
-
 describe('USER', () => {
   let app: INestApplication;
   let users;
   let count = 0;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    await mongoose.connect(database);
+    await mongoose.connection.db.dropDatabase();
+    console.log('DATABASE CLEANED');
+  });
+
+  afterAll(async (done) => {
+    await mongoose.connection.db.dropDatabase();
+    console.log('DATABASE CLEANED');
+    await mongoose.disconnect(done);
   });
 
   const createUserDTOS: CreateUserDto[] = [
@@ -68,10 +69,10 @@ describe('USER', () => {
   ];
 
   createUserDTOS.map((createUserDTO) => {
-    it('should create user', async () => {
+    test('should create user', async () => {
       count++;
       return request(app.getHttpServer())
-        .post('/user')
+        .post('/users')
         .set('Accept', 'application/json')
         .send(createUserDTO)
         .expect(201)
@@ -84,9 +85,9 @@ describe('USER', () => {
     });
   });
 
-  it('should get allUsers', async () => {
+  test('should get allUsers', async () => {
     return request(app.getHttpServer())
-      .get('/user')
+      .get('/users')
       .set('Accept', 'application/json')
       .expect(200)
       .expect(({ body }) => {
@@ -95,9 +96,9 @@ describe('USER', () => {
       });
   });
 
-  it('should update first User', async () => {
+  test('should update first User', async () => {
     return request(app.getHttpServer())
-      .put(`/user/${users[0]._id}`)
+      .put(`/users/${users[0]._id}`)
       .set('Accept', 'application/json')
       .send({
         name: 'Ben',
@@ -111,9 +112,9 @@ describe('USER', () => {
       });
   });
 
-  it('should delete last User', async () => {
+  test('should delete last User', async () => {
     return request(app.getHttpServer())
-      .delete(`/user/${users[users.length - 1]._id}`)
+      .delete(`/users/${users[users.length - 1]._id}`)
       .set('Accept', 'application/json')
       .expect(200);
   });
