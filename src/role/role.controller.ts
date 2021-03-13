@@ -22,6 +22,11 @@ export class RolesController {
     return this.roleService.findByID(id);
   }
 
+  @Get('users/:userID')
+  findAllByUser(@Param('userID') id: string) {
+    return this.roleService.findAllByUserID(id);
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
     return this.roleService.update(id, updateRoleDto);

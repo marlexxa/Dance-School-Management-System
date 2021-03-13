@@ -38,6 +38,17 @@ export class RoleService {
     return role;
   }
 
+  async findAllByUserID(userID: string): Promise<RoleInterface[]> {
+    const roles = await this.roleModel.find().populate('user', '-password -gender').exec();
+    let filtered = roles.filter((role) => {
+      return role.user._id == userID;
+    });
+    if (!filtered || !filtered[0]) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return filtered;
+  }
+
   async update(id: string, updateRoleDto: UpdateRoleDto) {
     const role = await this.roleModel.findByIdAndUpdate({ _id: id }, updateRoleDto).exec();
     if (!role) {
