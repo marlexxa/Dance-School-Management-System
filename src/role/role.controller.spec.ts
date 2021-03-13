@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RolesController } from './role.controller';
-import { RolesService } from './role.service';
+import { RoleController } from './role.controller';
+import { RoleService } from './role.service';
 
-describe('RolesController', () => {
-  let controller: RolesController;
+describe('RoleController', () => {
+  let controller: RoleController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [RolesController],
-      providers: [RolesService],
+      controllers: [RoleController],
+      providers: [RoleService],
     }).compile();
 
-    controller = module.get<RolesController>(RolesController);
+    controller = module.get<RoleController>(RoleController);
   });
 
   it('should be defined', () => {

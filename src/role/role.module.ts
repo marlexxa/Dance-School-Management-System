@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { RolesService } from './role.service';
-import { RolesController } from './role.controller';
+import { RoleService } from './role.service';
+import { RoleController } from './role.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RoleSchema } from './entities/role.entity';
 import { UserSchema } from '../user/entities/user.entity';
@@ -20,7 +20,7 @@ import { UserSchema } from '../user/entities/user.entity';
       },
     ]),
   ],
-  controllers: [RolesController],
-  providers: [RolesService],
+  controllers: [RoleController],
+  providers: [RoleService],
 })
-export class RolesModule {}
+export class RoleModule {}
