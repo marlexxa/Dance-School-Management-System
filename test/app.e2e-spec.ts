@@ -5,6 +5,8 @@ import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { PassTests } from './passTests';
 import { UserTest } from './userTests';
+import { PhoneTest } from './phoneTests';
+import { Phone } from 'src/phone/entities/phone.entity';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -24,4 +26,5 @@ describe('AppController (e2e)', () => {
 
   UserTest();
   PassTests();
+  PhoneTest();
 });
