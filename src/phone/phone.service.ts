@@ -55,7 +55,7 @@ export class PhoneService {
     if (!phone) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
-    return phone;
+    return this.findByID(id);
   }
 
   async remove(id: string) {
