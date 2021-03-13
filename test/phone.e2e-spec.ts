@@ -14,6 +14,7 @@ beforeAll(async () => {
 
 afterAll(async (done) => {
   await mongoose.disconnect(done);
+  await mongoose.connection.db.dropDatabase();
 });
 
 describe('PHONE', () => {

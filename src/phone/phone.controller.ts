@@ -21,8 +21,8 @@ export class PhoneController {
   findOne(@Param('id') id: string) {
     return this.phoneService.findByID(id);
   }
-  @Get('user/:user')
-  findAllByUser(@Param('user') id: string) {
+  @Get('users/:userID')
+  findAllByUser(@Param('users') id: string) {
     return this.phoneService.findAllByUserID(id);
   }
 
