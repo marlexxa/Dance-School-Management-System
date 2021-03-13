@@ -3,7 +3,7 @@ import { PassService } from './pass.service';
 import { CreatePassDto } from './dto/create-pass.dto';
 import { UpdatePassDto } from './dto/update-pass.dto';
 
-@Controller('pass')
+@Controller('passes')
 export class PassController {
   constructor(private readonly passService: PassService) {}
 
@@ -17,13 +17,13 @@ export class PassController {
     return this.passService.findByID(id);
   }
 
-  @Get('user/:userId')
-  findAllByUser(@Param('userId') id: string) {
+  @Get('users/:userID')
+  findAllByUser(@Param('userID') id: string) {
     return this.passService.findAllByUserID(id);
   }
 
-  /*@Get('group:groupId')
-  findAllByGroup(@Param('id') id: string) {
+  /*@Get('group/:groupID')
+  findAllByGroup(@Param('groupID') id: string) {
     return this.passService.findAllByGroupID(id);
   }*/
 

@@ -30,10 +30,10 @@ export class PassService {
     return pass;
   }
 
-  async findAllByUserID(userId: string): Promise<PassInterface[]> {
+  async findAllByUserID(userID: string): Promise<PassInterface[]> {
     const passes = await this.passModel.find().populate('user', '-password -gender').exec();
     let filtered = passes.filter((pass) => {
-      return pass.user._id == userId;
+      return pass.user._id == userID;
     });
     if (!filtered || !filtered[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
