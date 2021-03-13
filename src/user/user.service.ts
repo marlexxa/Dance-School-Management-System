@@ -9,11 +9,6 @@ import { UserInterface } from './interfaces/user.interface';
 export class UserService {
   constructor(@InjectModel('User') private readonly userModel: Model<UserInterface>) {}
 
-  async create(createUserDto: CreateUserDto) {
-    const user = await new this.userModel(createUserDto);
-    return user.save();
-  }
-
   async findAll() {
     const users = await this.userModel.find().exec();
     if (!users || !users[0]) {
@@ -28,6 +23,11 @@ export class UserService {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
     return user;
+  }
+
+  async create(createUserDto: CreateUserDto) {
+    const user = await new this.userModel(createUserDto);
+    return user.save();
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
