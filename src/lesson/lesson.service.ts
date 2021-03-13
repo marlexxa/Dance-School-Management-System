@@ -7,8 +7,10 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class LessonService {
-  constructor(@InjectModel('Lesson') private readonly lessonModel: Model<LessonInterface>) {}
-
+  constructor(
+    @InjectModel('Lesson') private readonly lessonModel: Model<LessonInterface>,
+    @InjectModel('User') private readonly userModel: Model<UserInterface>,
+  ) {}
   async create(createLessonDto: CreateLessonDto) {
     const lesson = await new this.lessonModel(createLessonDto);
     return lesson.save();
@@ -47,3 +49,5 @@ export class LessonService {
     return lesson;
   }
 }
+
+// brak endpontów na wyszukiwanie po grupie, teacherze, studencie , dacie
