@@ -39,7 +39,7 @@ describe('PHONE', () => {
     await app.init();
 
     await request(app.getHttpServer())
-      .post('/user')
+      .post('/users')
       .set('Accept', 'application/json')
       .send(createUserDto)
       .expect(({ body }) => {
@@ -100,6 +100,6 @@ describe('PHONE', () => {
     return request(app.getHttpServer()).delete(`/phones/${fetchedPhones[0]._id}`).set('Accept', 'application/json').expect(200);
   });
   it('should delete last User', async () => {
-    return request(app.getHttpServer()).delete(`/user/${createdUser._id}`).set('Accept', 'application/json').expect(200);
+    return request(app.getHttpServer()).delete(`/users/${createdUser._id}`).set('Accept', 'application/json').expect(200);
   });
 });

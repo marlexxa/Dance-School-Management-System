@@ -9,7 +9,6 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class PhoneService {
-  // to dodam do konstruktora gdy polacze to z userem @InjectModel('User') private readonly userModel: Model<UserInterface>,
   constructor(
     @InjectModel('Phone') private readonly phoneModel: Model<PhoneInterface>,
     @InjectModel('User') private readonly userModel: Model<UserInterface>,
