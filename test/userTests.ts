@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import * as mongoose from 'mongoose';
 import { database } from './constants';
 import { CreateUserDto } from '../src/user/dto/create-user.dto';
