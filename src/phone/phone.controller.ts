@@ -22,7 +22,7 @@ export class PhoneController {
     return this.phoneService.findByID(id);
   }
   @Get('users/:userID')
-  findAllByUser(@Param('users') id: string) {
+  findAllByUser(@Param('userID') id: string) {
     return this.phoneService.findAllByUserID(id);
   }
 
