@@ -5,7 +5,8 @@ import * as mongoose from 'mongoose';
 import { database } from './constants';
 import { CreateUserDto } from '../src/user/dto/create-user.dto';
 import * as request from 'supertest';
-export const PhoneTest = () => {
+
+export const PhoneTests = () => {
   describe('PHONE', () => {
     let app: INestApplication;
     let createdUser;

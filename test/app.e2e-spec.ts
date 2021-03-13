@@ -3,9 +3,9 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { PassTests } from './passTests';
-import { UserTest } from './userTests';
+import { UserTests } from './userTests';
 import { RoleTests } from './roleTests';
-import { PhoneTest } from './phoneTests';
+import { PhoneTests } from './phoneTests';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -23,8 +23,8 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer()).get('/').expect(200).expect('Hello World!');
   });
 
-  UserTest();
+  UserTests();
   PassTests();
   RoleTests();
-  PhoneTest();
+  PhoneTests();
 });
