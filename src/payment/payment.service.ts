@@ -22,6 +22,14 @@ export class PaymentService {
     return payment;
   }
 
+  async findAllPaymentsForUser(userId: string) {
+    const user = await this.paymentModel.find({ userId }).exec();
+    if (!user || !user[0]) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return user;
+  }
+
   async findOne(id: string) {
     const payment = await this.paymentModel.findOne({ _id: id }).exec();
     if (!payment) {

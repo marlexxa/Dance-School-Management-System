@@ -17,6 +17,11 @@ export class PaymentController {
     return this.paymentService.findAll();
   }
 
+  @Get(':userId')
+  findAllPaymentsForUser(@Param('userId') userId: string) {
+    return this.paymentService.findOne(userId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.paymentService.findOne(id);
