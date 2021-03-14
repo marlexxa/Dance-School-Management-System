@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common'
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { User } from 'src/user/entities/user.entity';
 
 @Controller('payment')
 export class PaymentController {
@@ -17,9 +18,9 @@ export class PaymentController {
     return this.paymentService.findAll();
   }
 
-  @Get(':userId')
+  @Get('users/:userId')
   findAllPaymentsForUser(@Param('userId') userId: string) {
-    return this.paymentService.findOne(userId);
+    return this.paymentService.findAllPaymentsForUser(userId);
   }
 
   @Get(':id')

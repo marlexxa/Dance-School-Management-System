@@ -10,7 +10,7 @@ export class Payment {
     ref: 'User',
     required: true,
   })
-  userId: User;
+  userId: string;
 
   @Prop({
     type: String,
@@ -23,7 +23,7 @@ export class Payment {
     ref: 'Deposit',
     required: false,
   })
-  deposits: Deposit;
+  deposits: string;
 }
 
 export const PaymentSchema = SchemaFactory.createForClass(Payment);

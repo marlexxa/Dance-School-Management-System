@@ -23,15 +23,21 @@ export class PaymentService {
     return payment;
   }
 
-  async findAllPaymentsForUser(userId: User) {
+  async findAllPaymentsForUser(userId: string) {
+    console.log(userId);
     const user = await this.paymentModel.find({ userId }).exec();
-    if (!user || !user[0]) {
+    let userFiltered = user.filter((payment) => {
+      return payment.userId == userId;
+    });
+    if (!userFiltered || !userFiltered[0]) {
+      console.log(userFiltered);
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
-    return user;
+    return userFiltered;
   }
 
   async findOne(id: string) {
+    console.log(id);
     const payment = await this.paymentModel.findOne({ _id: id }).exec();
     if (!payment) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
