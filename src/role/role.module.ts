@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { PassService } from './pass.service';
-import { PassController } from './pass.controller';
+import { RoleService } from './role.service';
+import { RoleController } from './role.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Pass, PassSchema } from './entities/pass.entity';
+import { RoleSchema } from './entities/role.entity';
 import { UserSchema } from '../user/entities/user.entity';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       {
-        name: 'Pass',
-        schema: PassSchema,
+        name: 'Role',
+        schema: RoleSchema,
       },
     ]),
     MongooseModule.forFeature([
@@ -20,7 +20,7 @@ import { UserSchema } from '../user/entities/user.entity';
       },
     ]),
   ],
-  controllers: [PassController],
-  providers: [PassService],
+  controllers: [RoleController],
+  providers: [RoleService],
 })
-export class PassModule {}
+export class RoleModule {}
