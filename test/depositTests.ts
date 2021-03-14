@@ -45,7 +45,7 @@ describe('DEPOSIT', () => {
 
   it('should create deposit for user', async () => {
     return request(app.getHttpServer())
-      .post('/deposit')
+      .post('/deposits')
       .set('Accept', 'application/json')
       .send({
         user: createdUser._id,
@@ -62,7 +62,7 @@ describe('DEPOSIT', () => {
 
   it('should not create deposit to not existing user', async () => {
     return request(app.getHttpServer())
-      .post('/deposit')
+      .post('/deposits')
       .set('Accept', 'application/json')
       .send({
         user: '00000',
@@ -76,7 +76,7 @@ describe('DEPOSIT', () => {
 
   test('should get allDeposits', async () => {
     return request(app.getHttpServer())
-      .get('/deposit')
+      .get('/deposits')
       .set('Accept', 'application/json')
       .expect(200)
       .expect(({ body }) => {
@@ -87,7 +87,7 @@ describe('DEPOSIT', () => {
 
   test('should update deposit', async () => {
     return request(app.getHttpServer())
-      .put(`/deposit/${fetchedDeposits[0]._id}`)
+      .put(`/deposits/${fetchedDeposits[0]._id}`)
       .set('Accept', 'application/json')
       .send({
         user: '00000',
@@ -102,6 +102,6 @@ describe('DEPOSIT', () => {
   });
 
   it('should delete last deposit', async () => {
-    return request(app.getHttpServer()).delete(`/passes/${fetchedDeposits[0]._id}`).set('Accept', 'application/json').expect(200);
+    return request(app.getHttpServer()).delete(`/deposits/${fetchedDeposits[0]._id}`).set('Accept', 'application/json').expect(200);
   });
 });
