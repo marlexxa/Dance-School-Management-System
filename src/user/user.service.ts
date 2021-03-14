@@ -9,13 +9,7 @@ import { UserInterface } from './interfaces/user.interface';
 export class UserService {
   constructor(@InjectModel('User') private readonly userModel: Model<UserInterface>) {}
 
-  async create(createUserDto: CreateUserDto) {
-    const user = await new this.userModel(createUserDto);
-    return user.save();
-  }
-
   async findAll() {
-    console.log('FIND ALL');
     const users = await this.userModel.find().exec();
     if (!users || !users[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
@@ -24,7 +18,6 @@ export class UserService {
   }
 
   async findOne(id: string) {
-    console.log('FIND ONE');
     const user = await this.userModel.findOne({ _id: id }).exec();
     if (!user) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
@@ -32,12 +25,17 @@ export class UserService {
     return user;
   }
 
+  async create(createUserDto: CreateUserDto) {
+    const user = await new this.userModel(createUserDto);
+    return user.save();
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.userModel.findByIdAndUpdate({ _id: id }, updateUserDto).exec();
     if (!user) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
-    return user;
+    return this.findOne(id);
   }
 
   async remove(id: string) {
