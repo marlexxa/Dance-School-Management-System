@@ -1,5 +1,7 @@
+import { UserInterface } from '../../user/interfaces/user.interface';
+
 export class CreateDepositDto {
-  userId: string;
+  user: UserInterface;
   amount: number;
   isPaid: boolean;
 }

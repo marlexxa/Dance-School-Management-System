@@ -1,8 +1,8 @@
 import { Document } from 'mongoose';
+import { UserInterface } from 'src/user/interfaces/user.interface';
 
 export interface DepositInterface extends Document {
-  id: number;
-  userId: number;
+  user: UserInterface;
   amount: number;
   isPaid: boolean;
 }

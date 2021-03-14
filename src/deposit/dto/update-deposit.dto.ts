@@ -1,9 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateDepositDto } from './create-deposit.dto';
 
-export class UpdateDepositDto extends PartialType(CreateDepositDto) {
-  id: string;
-  userId: string;
-  amount: number;
-  isPaid: boolean;
-}
+export class UpdateDepositDto extends PartialType(CreateDepositDto) {}

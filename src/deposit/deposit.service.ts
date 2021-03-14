@@ -35,7 +35,7 @@ export class DepositService {
     if (!deposit) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
-    return deposit;
+    return this.findOne(id);
   }
 
   async remove(id: number) {
