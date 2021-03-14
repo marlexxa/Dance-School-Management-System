@@ -1,26 +1,23 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
-import * as mongoose from 'mongoose';
 import { database } from './constants';
-import { CreateUserDto } from '../src/user/dto/create-user.dto';
+import * as mongoose from 'mongoose';
 import * as request from 'supertest';
+import { RoleType } from '../src/role/enum/role.enum';
+import { CreateUserDto } from '../src/user/dto/create-user.dto';
 
-export const PhoneTests = () => {
-  describe('PHONE', () => {
+export const RoleTests = () => {
+  describe('ROLE', () => {
     let app: INestApplication;
     let createdUser;
-    let fetchedPhones;
+    let fetchedRoles;
 
-    afterAll(async (done) => {
-      await mongoose.connection.db.dropDatabase();
-      await mongoose.disconnect(done);
-    });
     const createUserDto: CreateUserDto = {
-      name: 'JANUSZ',
-      surname: 'GRZYWACZ',
-      mail: 'jon.doe@mail.com',
-      password: 'password',
+      name: 'Zenek',
+      surname: 'Martyniuk',
+      mail: 'zenon@mail.com',
+      password: 'oczyzielone',
       gender: 'male',
     };
 
@@ -33,6 +30,7 @@ export const PhoneTests = () => {
       await app.init();
       await mongoose.connect(database);
       await mongoose.connection.db.dropDatabase();
+
       await request(app.getHttpServer())
         .post('/users')
         .set('Accept', 'application/json')
@@ -42,57 +40,74 @@ export const PhoneTests = () => {
         });
     });
 
-    it('should create phone to existing user', async () => {
+    afterAll(async (done) => {
+      await mongoose.connection.db.dropDatabase();
+      await mongoose.disconnect(done);
+    });
+
+    test('should create role if user exist', async () => {
       return request(app.getHttpServer())
-        .post('/phones')
+        .post('/roles')
         .set('Accept', 'application/json')
         .send({
+          roleType: 'STUDENT', //lowercase:true in RoleSchema changes it to lowercase so it fits with enum elements
           user: createdUser._id,
-          phoneNumber: '123456789',
         })
         .expect(201)
         .expect(({ body }) => {
           expect(body.user).toEqual(createdUser._id);
+          expect(body.roleType).toEqual(RoleType.Student);
         });
     });
 
-    it('should not create pass to not existing user', async () => {
+    test('should not create role if user does not exist', async () => {
       return request(app.getHttpServer())
-        .post('/phones')
+        .post('/roles')
         .set('Accept', 'application/json')
         .send({
-          user: 'someVALUE',
-          phoneNumber: '123456789',
+          roleType: RoleType.Teacher,
+          user: 'bratZenka',
         })
         .expect(500);
     });
 
-    it('should get allPhones', async () => {
+    test('should not create role if roleType differs from enum', async () => {
       return request(app.getHttpServer())
-        .get('/phones')
+        .post('/roles')
+        .set('Accept', 'application/json')
+        .send({
+          roleType: 'dreamer',
+          user: createdUser._id,
+        })
+        .expect(500);
+    });
+
+    test('should get all roles', async () => {
+      return request(app.getHttpServer())
+        .get('/roles')
         .set('Accept', 'application/json')
         .expect(200)
         .expect(({ body }) => {
           expect(body.length).toEqual(1);
-          fetchedPhones = body;
+          fetchedRoles = body;
         });
     });
 
-    it('should update phone', async () => {
+    test('should update role', async () => {
       return request(app.getHttpServer())
-        .put(`/phones/${fetchedPhones[0]._id}`)
+        .put(`/roles/${fetchedRoles[0]._id}`)
         .set('Accept', 'application/json')
         .send({
+          roleType: RoleType.Admin,
           user: createdUser._id,
-          phoneNumber: '111111111',
         })
         .expect(({ body }) => {
-          expect(body.phoneNumber).toEqual('111111111');
+          expect(body.roleType).toEqual(RoleType.Admin);
         });
     });
 
-    it('should delete phone', async () => {
-      return request(app.getHttpServer()).delete(`/phones/${fetchedPhones[0]._id}`).set('Accept', 'application/json').expect(200);
+    test('should delete role', async () => {
+      return request(app.getHttpServer()).delete(`/roles/${fetchedRoles[0]._id}`).set('Accept', 'application/json').expect(200);
     });
   });
 };

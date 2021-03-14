@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import * as mongoose from 'mongoose';
 import { database } from './constants';
 import { CreateUserDto } from '../src/user/dto/create-user.dto';
@@ -7,7 +6,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
 
-export const UserTest = () => {
+export const UserTests = () => {
   describe('USER', () => {
     let app: INestApplication;
     let users;
