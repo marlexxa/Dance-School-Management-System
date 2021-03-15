@@ -12,11 +12,13 @@ import { LessonModule } from './lesson/lesson.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { mongoUri } from './config/mongo';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
     UserModule,
     GroupModule,
+    MailModule,
     RoleModule,
     PaymentModule,
     PassModule,
