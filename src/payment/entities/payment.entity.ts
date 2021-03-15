@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+import { Deposit } from 'src/deposit/entities/deposit.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Schema()
 export class Payment {
@@ -8,7 +10,7 @@ export class Payment {
     ref: 'User',
     required: true,
   })
-  user: string;
+  user: User;
 
   @Prop({
     type: String,
@@ -21,7 +23,7 @@ export class Payment {
     ref: 'Deposit',
     required: false,
   })
-  deposits: string;
+  deposits: Deposit;
 }
 
 export const PaymentSchema = SchemaFactory.createForClass(Payment);
