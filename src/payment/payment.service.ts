@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Req } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'src/user/entities/user.entity';
 import { UserInterface } from 'src/user/interfaces/user.interface';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
@@ -33,7 +32,7 @@ export class PaymentService {
     return payment;
   }
 
-  async findAllPaymentsForUser(userId: User) {
+  async findAllPaymentsForUser(userId: string) {
     const payment = await this.paymentModel.find({ userId }).exec();
     if (!payment || !payment[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
