@@ -34,8 +34,8 @@ export class ScheduleService {
     const schedules = await this.scheduleModel.find().exec();
 
     schedules.forEach((schedule) => {
-      schedule.lessons.forEach((lessonId) => {
-        if (lessonId == id) {
+      schedule.lessons.forEach((lesson) => {
+        if (lesson._id == id) {
           return schedule;
         }
       });

@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+import { Lesson } from '../../lesson/entities/lesson.entity';
 
 @Schema()
 export class Schedule {
@@ -8,7 +9,7 @@ export class Schedule {
     ref: 'Lesson',
     required: true,
   })
-  lessonId: string[];
+  lessons: string[];
 }
 
 export const ScheduleSchema = SchemaFactory.createForClass(Schedule);
