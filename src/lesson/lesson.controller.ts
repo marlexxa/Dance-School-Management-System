@@ -18,8 +18,18 @@ export class LessonController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.lessonService.findOne(id);
+  findByID(@Param('id') id: string) {
+    return this.lessonService.findByID(id);
+  }
+
+  @Get(':id')
+  findAllByDate(@Param('date') date: Date) {
+    return this.lessonService.findAllByDate(date);
+  }
+
+  @Get(':id')
+  findAllByUserID(@Param('userID') userID: string) {
+    return this.lessonService.findAllByUserID(userID);
   }
 
   @Put(':id')
@@ -32,5 +42,3 @@ export class LessonController {
     return this.lessonService.remove(id);
   }
 }
-
-// brak endpontów na wyszukiwanie po grupie, teacherze, studencie , dacie
