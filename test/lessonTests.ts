@@ -5,12 +5,14 @@ import * as mongoose from 'mongoose';
 import { database } from './constants';
 import * as request from 'supertest';
 import { CreateUserDto } from '../src/user/dto/create-user.dto';
+// import { CreateGroupDto } from '../src/group/dto/create-group.dto';
 
 export const LessonTests = () => {
-  describe('PASS', () => {
+  describe('LESSON', () => {
     let app: INestApplication;
     let createdUser;
-    let fetchedPasses;
+    // let createdGroup;
+    let fetchedLessons;
 
     const createUserDto: CreateUserDto = {
       name: 'JANUSZ',
@@ -19,6 +21,15 @@ export const LessonTests = () => {
       password: 'password',
       gender: 'male',
     };
+
+    // const createGroupDto: createGroupDto = {
+    //   danceType: 'Salsa',
+    //   advanceLevel: 'P1',
+    //   teacher: '',
+    //   student: '',
+    //   maxAmount: '20',
+    //   schedule: '1',
+    // };
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -37,6 +48,14 @@ export const LessonTests = () => {
         .expect(({ body }) => {
           createdUser = body;
         });
+
+      // await request(app.getHttpServer())
+      //   .post('/groups')
+      //   .set('Accept', 'application/json')
+      //   .send(createGroupDto)
+      //   .expect(({ body }) => {
+      //     createdGroup = body;
+      //   });
     });
 
     afterAll(async (done) => {
@@ -44,16 +63,18 @@ export const LessonTests = () => {
       await mongoose.disconnect(done);
     });
 
-    test('should create pass to existing user', async () => {
+    test('should create lesson to existing user', async () => {
       return request(app.getHttpServer())
-        .post('/passes')
+        .post('/lessons')
         .set('Accept', 'application/json')
         .send({
-          user: createdUser._id,
-          startDate: '04-24-2021',
-          endDate: '04-24-2021',
-          remainingNumber: 20,
-          price: 80,
+          date: '04-24-2021',
+          teacher: createdUser._id,
+          // group: createdGroup._id,
+          student: createdUser._id,
+          priceInCash: 20,
+          startTime: '04-24-2021T10:00:00',
+          endTime: '04-24-2021T12:00:00',
         })
         .expect(201)
         .expect(({ body }) => {
@@ -61,49 +82,53 @@ export const LessonTests = () => {
         });
     });
 
-    test('should not create pass to not existing user', async () => {
+    test('should not create lesson to not existing date', async () => {
       return request(app.getHttpServer())
-        .post('/passes')
+        .post('/lessons')
         .set('Accept', 'application/json')
         .send({
-          user: 'someVALUE',
-          startDate: '04-24-2021',
-          endDate: '04-24-2021',
-          remainingNumber: 20,
-          price: 80,
+          date: '04-41-2021',
+          teacher: createdUser._id,
+          // group: createdGroup._id,
+          student: createdUser._id,
+          priceInCash: 20,
+          startTime: '04-24-2021T10:00:00',
+          endTime: '04-24-2021T12:00:00',
         })
         .expect(500);
     });
 
-    test('should get allPasses', async () => {
+    test('should get all lessons', async () => {
       return request(app.getHttpServer())
-        .get('/passes')
+        .get('/lessons')
         .set('Accept', 'application/json')
         .expect(200)
         .expect(({ body }) => {
           expect(body.length).toEqual(1);
-          fetchedPasses = body;
+          fetchedLessons = body;
         });
     });
 
-    test('should update pass', async () => {
+    test('should update lesson', async () => {
       return request(app.getHttpServer())
-        .put(`/passes/${fetchedPasses[0]._id}`)
+        .put(`/lessons/${fetchedLessons[0]._id}`)
         .set('Accept', 'application/json')
         .send({
-          user: createdUser._id,
-          startDate: '04-24-2021',
-          endDate: '04-24-2021',
-          remainingNumber: 20,
-          price: 2000,
+          date: '04-24-2021',
+          teacher: createdUser._id,
+          // group: createdGroup._id,
+          student: createdUser._id,
+          priceInCash: 20,
+          startTime: '04-24-2021T10:00:00',
+          endTime: '04-24-2021T13:00:00',
         })
         .expect(({ body }) => {
           expect(body.price).toEqual(2000);
         });
     });
 
-    test('should delete pass', async () => {
-      return request(app.getHttpServer()).delete(`/passes/${fetchedPasses[0]._id}`).set('Accept', 'application/json').expect(200);
+    test('should delete lesson', async () => {
+      return request(app.getHttpServer()).delete(`/lessons/${fetchedLessons[0]._id}`).set('Accept', 'application/json').expect(200);
     });
   });
 };

@@ -3,7 +3,7 @@ import { LessonService } from './lesson.service';
 import { LessonController } from './lesson.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LessonSchema } from './entities/lesson.entity';
-import { UserSchema } from 'src/user/entities/user.entity';
+import { UserSchema } from '../user/entities/user.entity';
 // import { GroupSchema } from 'src/user/entities/user.entity';
 
 @Module({

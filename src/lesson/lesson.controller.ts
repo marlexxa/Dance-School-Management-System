@@ -32,10 +32,10 @@ export class LessonController {
     return this.lessonService.findAllByUserID(userID);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateLessonDto: UpdateLessonDto) {
-    return this.lessonService.update(id, updateLessonDto);
-  }
+  // @Put(':id')
+  // update(@Param('id') id: string, @Body() updateLessonDto: UpdateLessonDto) {
+  //   return this.lessonService.update(id, updateLessonDto);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

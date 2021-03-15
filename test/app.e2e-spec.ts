@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { PassTest } from './passTests';
+import { PassTests } from './passTests';
 import { UserTests } from './userTests';
 import { PhoneTests } from './phoneTests';
 import { DepositTest } from './depositTests';
@@ -25,7 +25,7 @@ describe('AppController (e2e)', () => {
   });
 
   UserTests();
-  PassTest();
+  PassTests();
   PhoneTests();
   DepositTest();
   LessonTests();

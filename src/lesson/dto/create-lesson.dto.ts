@@ -1,9 +1,12 @@
+import { UserInterface } from '../../user/interfaces/user.interface';
+// import { GroupInterface } from '../../group/interfaces/group.interface';
+
 export class CreateLessonDto {
   date: Date;
-  teacherId: number;
-  groupId: number;
-  students: string[];
+  teacher: string;
+  // group: GroupInterface;
+  student: UserInterface;
   priceInCash: number;
-  startTime: string;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
 }
