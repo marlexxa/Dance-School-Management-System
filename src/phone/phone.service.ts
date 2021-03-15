@@ -41,8 +41,8 @@ export class PhoneService {
   }
   async findAllByUserID(userId: string): Promise<PhoneInterface[]> {
     const phones = await this.phoneModel.find().populate('user', '-password -gender').exec();
-    let filtered = phones.filter((pass) => {
-      return pass.user._id == userId;
+    let filtered = phones.filter((phone) => {
+      return phone.user._id == userId;
     });
     if (!filtered || !filtered[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
