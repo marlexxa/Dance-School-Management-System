@@ -4,7 +4,7 @@ import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { User } from 'src/user/entities/user.entity';
 
-@Controller('payment')
+@Controller('payments')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
@@ -19,7 +19,7 @@ export class PaymentController {
   }
 
   @Get('users/:userId')
-  findAllPaymentsForUser(@Param('userId') userId: string) {
+  findAllPaymentsForUser(@Param('userId') userId: User) {
     return this.paymentService.findAllPaymentsForUser(userId);
   }
 

@@ -1,8 +1,8 @@
 import { Document } from 'mongoose';
-import { User } from 'src/user/entities/user.entity';
+import { UserInterface } from 'src/user/interfaces/user.interface';
 
 export interface PaymentInterface extends Document {
-  userId: string;
+  user: UserInterface;
   paymentMethod: string;
   deposits: string;
 }

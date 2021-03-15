@@ -1,18 +1,28 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Req } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/user/entities/user.entity';
+import { UserInterface } from 'src/user/interfaces/user.interface';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { PaymentInterface } from './interfaces/payment.interface';
 
 @Injectable()
 export class PaymentService {
-  constructor(@InjectModel('Payment') private readonly paymentModel: Model<PaymentInterface>) {}
+  constructor(
+    @InjectModel('Payment') private readonly paymentModel: Model<PaymentInterface>,
+    @InjectModel('User') private readonly userModel: Model<UserInterface>,
+  ) {}
 
   async create(createPaymentDto: CreatePaymentDto) {
-    const payment = await new this.paymentModel(createPaymentDto);
-    return payment.save();
+    const user = await this.userModel.findById(createPaymentDto.user).exec();
+
+    if (user) {
+      const payment = await new this.paymentModel(createPaymentDto);
+      return payment.save();
+    } else {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
   }
 
   async findAll() {
@@ -23,17 +33,12 @@ export class PaymentService {
     return payment;
   }
 
-  async findAllPaymentsForUser(userId: string) {
-    console.log(userId);
-    const user = await this.paymentModel.find({ userId }).exec();
-    let userFiltered = user.filter((payment) => {
-      return payment.userId == userId;
-    });
-    if (!userFiltered || !userFiltered[0]) {
-      console.log(userFiltered);
+  async findAllPaymentsForUser(userId: User) {
+    const payment = await this.paymentModel.find({ userId }).exec();
+    if (!payment || !payment[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
-    return userFiltered;
+    return payment;
   }
 
   async findOne(id: string) {

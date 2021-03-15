@@ -1,7 +1,7 @@
-import { User } from 'src/user/entities/user.entity';
+import { UserInterface } from 'src/user/interfaces/user.interface';
 
 export class CreatePaymentDto {
-  userId: string;
+  user: UserInterface;
   paymentMethod: string;
   deposit: number;
 }
