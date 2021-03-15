@@ -13,15 +13,15 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @UseGuards(LocalAuthGuard) //it will run local strategy before post request
+  @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  async login(@Request() request) {
-    return this.authService.login(request.user);
+  async login(@Request() req) {
+    return this.authService.login(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() request) {
-    return request.user;
+  getProfile(@Request() req) {
+    return req.user;
   }
 }

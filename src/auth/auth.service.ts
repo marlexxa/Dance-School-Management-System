@@ -6,11 +6,11 @@ import { UserInterface } from '../user/interfaces/user.interface';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UserService, private jwtService: JwtService) {}
+  constructor(private userService: UserService, private jwtService: JwtService) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
-    if (user && bcrypt.compare(pass, user.password)) {
+  async validateUser(mail: string, pass: string): Promise<any> {
+    const user = await this.userService.findByEmail(mail);
+    if (user && (await bcrypt.compare(pass, user.password))) {
       const { password, ...result } = user;
       return result;
     }
@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   async login(user: UserInterface): Promise<any> {
-    const payload = { login: user.surname, id: user._id };
+    const payload = { mail: user.mail, id: user._id };
 
     return {
       access_token: this.jwtService.sign(payload),

@@ -10,9 +10,11 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     UserModule,
     PassportModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET_KEY,
-      signOptions: { expiresIn: process.env.JWT_TOKEN_EXPIRESIN },
+    JwtModule.registerAsync({
+      useFactory: async () => ({
+        secret: process.env.JWT_SECRET_KEY,
+        signOptions: { expiresIn: process.env.JWT_TOKEN_EXPIRESIN },
+      }),
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
