@@ -29,7 +29,7 @@ export class UserService {
   async findByEmail(email: string) {
     const user = await this.userModel.findOne({ mail: email }).exec();
     if (!user) {
-      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+      throw new HttpException('E-mail Not Found', HttpStatus.NOT_FOUND);
     }
     return user;
   }
