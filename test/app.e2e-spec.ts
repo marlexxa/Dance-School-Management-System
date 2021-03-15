@@ -3,8 +3,8 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { PassTests } from './passTests';
-import { UserTest } from './userTests';
-import { PhoneTest } from './phoneTests';
+import { UserTests } from './userTests';
+import { PhoneTests } from './phoneTests';
 import { DepositTest } from './depositTests';
 
 describe('AppController (e2e)', () => {
@@ -25,6 +25,6 @@ describe('AppController (e2e)', () => {
 
   UserTests();
   PassTests();
-  PhoneTest();
+  PhoneTests();
   DepositTest();
 });

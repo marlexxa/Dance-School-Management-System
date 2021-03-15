@@ -19,21 +19,21 @@ export class DepositController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.depositService.findOne(+id);
+    return this.depositService.findOne(id);
   }
 
   @Get('user/:id')
   findByUserId(@Param('id') id: string) {
-    return this.depositService.findOne(+id);
+    return this.depositService.findOne(id);
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateDepositDto: UpdateDepositDto) {
-    return this.depositService.update(+id, updateDepositDto);
+    return this.depositService.update(id, updateDepositDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.depositService.remove(+id);
+    return this.depositService.remove(id);
   }
 }
