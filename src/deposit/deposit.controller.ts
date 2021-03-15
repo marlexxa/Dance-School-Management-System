@@ -22,8 +22,8 @@ export class DepositController {
     return this.depositService.findOne(+id);
   }
 
-  @Get('user:id')
-  findUserId(@Param('id') id: string) {
+  @Get('user/:id')
+  findByUserId(@Param('id') id: string) {
     return this.depositService.findOne(+id);
   }
 

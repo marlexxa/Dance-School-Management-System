@@ -6,6 +6,7 @@ import { AppModule } from './../src/app.module';
 import { PassTests } from './passTests';
 import { UserTest } from './userTests';
 import { PhoneTest } from './phoneTests';
+import { DepositTest } from './depositTests';
 import { Phone } from 'src/phone/entities/phone.entity';
 
 describe('AppController (e2e)', () => {
@@ -27,4 +28,5 @@ describe('AppController (e2e)', () => {
   UserTest();
   PassTests();
   PhoneTest();
+  DepositTest();
 });

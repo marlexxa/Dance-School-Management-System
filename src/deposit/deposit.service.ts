@@ -50,7 +50,7 @@ export class DepositService {
     return deposit;
   }
 
-  async findUserId(id: string) {
+  async findByUserId(id: string) {
     const deposits = await this.depositModel.find().exec();
     deposits.forEach((deposit) => {
       if (deposit.user._id == id) {
