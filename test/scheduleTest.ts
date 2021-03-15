@@ -6,7 +6,7 @@ import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
 import { CreateScheduleDto } from 'src/schedule/dto/create-schedule.dto';
 
-describe('USER', () => {
+describe('SCHEDULE', () => {
   let app: INestApplication;
   let schedules;
 
