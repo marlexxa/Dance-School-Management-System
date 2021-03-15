@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Simple Transactional Email</title>
+    <style>
+
+        body {
+            background-color: white;
+            font-family: sans-serif;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        header {
+            background-color: #00203FFF;
+            color: #ADEFD1FF;
+            margin: 20px auto !important;
+            text-align: center;
+            padding: 5px 0 ;
+        }
+
+        p {
+            font-size: 16px;
+        }
+
+        footer {
+            background-color: #00203FFF;
+            color: #ADEFD1FF;
+            margin: 20px auto !important;
+            text-align: center;
+            padding: 10px 0 ;
+        }
+
+
+        .container {
+            display: block;
+            margin: 5px auto !important;
+            max-width: 580px;
+            padding: 10px;
+            width: 620px;
+        }
+
+        .btn-container {
+            display: block;
+            margin: 5px auto !important;
+            max-width: 580px;
+            padding: 10px;
+            width: 620px;
+            text-align: center;
+        }
+
+        .content {
+            box-sizing: border-box;
+            background: #cccccc;
+            display: block;
+            margin: 0 auto;
+            max-width: 600px;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px 10px;
+            width: 30%;
+            margin: 5px auto !important;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            background-color: #ADEFD1FF;
+            color: #00203FFF ;
+        }
+
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>School Dance</h1>
+</header>
+<div class="container">
+
+    <p>Cześć {{recipientName}}!</p>
+    <p>Napisał do Ciebie {{senderName}} <{{senderMail}}></p>
+    <hr>
+
+    <div class="content">
+        <h2>Wiadomość: </h2>
+        <p>"'{{content}}'"</p>
+    </div>
+    <hr>
+
+    <div class="btn-container">
+        <a href="http://Tutajmabyćstronadoodpowiadanianawiadomości.pl"><button>Odpowiedz!</button></a>
+    </div>
+
+
+</div>
+<footer>
+    Email generated automatically
+    All rights reserved
+</footer>
+
+
+</body>
+
+</html>
