@@ -15,6 +15,6 @@ export class AppController {
   @UseGuards(LocalAuthGuard) //it will run local strategy before post request
   @Post('auth/login')
   async login(@Request() request) {
-    //return this.authService.login(request.user);
+    return this.authService.login(request.user);
   }
 }
