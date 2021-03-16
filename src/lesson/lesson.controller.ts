@@ -3,7 +3,7 @@ import { LessonService } from './lesson.service';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 
-@Controller('lesson')
+@Controller('lessons')
 export class LessonController {
   constructor(private readonly lessonService: LessonService) {}
 
@@ -22,20 +22,20 @@ export class LessonController {
     return this.lessonService.findByID(id);
   }
 
-  @Get(':id')
+  @Get('dates/:date')
   findAllByDate(@Param('date') date: Date) {
     return this.lessonService.findAllByDate(date);
   }
 
-  @Get(':id')
+  @Get('user:id')
   findAllByUserID(@Param('userID') userID: string) {
     return this.lessonService.findAllByUserID(userID);
   }
 
-  // @Put(':id')
-  // update(@Param('id') id: string, @Body() updateLessonDto: UpdateLessonDto) {
-  //   return this.lessonService.update(id, updateLessonDto);
-  // }
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateLessonDto: UpdateLessonDto) {
+    return this.lessonService.update(id, updateLessonDto);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

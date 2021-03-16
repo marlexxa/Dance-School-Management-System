@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+import { UserInterface } from '../../user/interfaces/user.interface';
 
 @Schema()
 export class Lesson {
   @Prop({
-    type: String,
+    type: Date,
     required: true,
   })
   date: Date;
@@ -13,13 +14,13 @@ export class Lesson {
     ref: 'User',
     required: true,
   })
-  teacherId: string;
-  @Prop({
-    type: mongoose.Schema.Types.ObjectId,
+  teachers: [UserInterface];
+  /*@Prop({
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'Group',
     required: true,
   })
-  groupId: string;
+  groupId: GroupInterface;*/
   @Prop({
     type: String,
     required: true,
@@ -30,7 +31,7 @@ export class Lesson {
     ref: 'User',
     required: true,
   })
-  students: [];
+  students: [UserInterface];
   @Prop({
     type: Number,
     required: true,
