@@ -27,6 +27,8 @@ export class User {
   password: string;
   @Prop({
     type: String,
+    enum: Gender,
+    lowercase: true,
     required: true,
   })
   gender: Gender;
