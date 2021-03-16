@@ -1,30 +1,38 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+import { Schedule } from 'src/schedule/entities/schedule.entity';
+import { User } from 'src/user/entities/user.entity';
+import { AdvanceLevel } from '../enum/advance-level.enum';
+import { DanceType } from '../enum/dance-type.enum';
 
 @Schema()
 export class Group {
   @Prop({
     type: String,
+    enum: DanceType,
+    lowercase: true,
     required: true,
   })
-  danceType: string;
+  danceType: DanceType;
   @Prop({
     type: String,
+    enum: AdvanceLevel,
+    lowercase: true,
     required: true,
   })
-  advanceLevel: string;
+  advanceLevel: AdvanceLevel;
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
     required: true,
   })
-  teachers: string[];
+  teachers: User[];
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
     required: true,
   })
-  students: string[];
+  students: User[];
   @Prop({
     type: Number,
     required: true,
@@ -35,7 +43,7 @@ export class Group {
     ref: 'Schedule',
     required: true,
   })
-  scheduleID: number;
+  schedule: Schedule;
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

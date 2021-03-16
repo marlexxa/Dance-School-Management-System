@@ -2,8 +2,11 @@ import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common'
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
+import { AdvanceLevel } from './enum/advance-level.enum';
+import { DanceType } from './enum/dance-type.enum';
+import { Schedule } from 'src/schedule/entities/schedule.entity';
 
-@Controller('group')
+@Controller('groups')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
@@ -23,18 +26,23 @@ export class GroupController {
   }
 
   @Get(':advanceLevel')
-  findAllByAdvanceLevel(@Param('advanceLevel') advanceLevel: string) {
+  findAllByAdvanceLevel(@Param('advanceLevel') advanceLevel: AdvanceLevel) {
     return this.groupService.findAllByAdvanceLevel(advanceLevel);
   }
 
   @Get(':danceType')
-  findAllByDanceType(@Param('danceType') danceType: string) {
+  findAllByDanceType(@Param('danceType') danceType: DanceType) {
     return this.groupService.findAllByDanceType(danceType);
   }
 
-  @Get(':teacherId')
+  @Get('teachers/:teacherId')
   findAllByTeacherId(@Param('teacherId') teachers: string) {
     return this.groupService.findAllByTeacherId(teachers);
+  }
+
+  @Get(':scheduleId')
+  findOneByScheduleId(@Param('scheduleId') schedule: Schedule) {
+    return this.groupService.findOneByScheduleId(schedule);
   }
 
   // @Get(':studentId')

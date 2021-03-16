@@ -50,30 +50,47 @@ export class GroupService {
   async findAllByTeacherId(teacherId: string): Promise<GroupInterface[]> {
     const groups = await this.groupModel.find().populate('user', '-password -gender').exec();
     const temp = [];
+    // rozw 1
     groups.forEach((group) => {
       group.teachers.forEach((teacher) => {
-        //też chyba do poprawy cała funkcja
         if (teacher._id == teacherId) {
           temp.push(teacher);
         }
       });
     });
+    // rozwiazanie 2 na wszelki
+    // groups.forEach((group) => {
+    //   group.teachers.filter((teacher) => {
+    //     return teacher._id == teacherId;
+    //   })
+    // });
     if (temp === undefined || temp.length === 0) {
       throw new HttpException('Not Found - findAllByTeacherId', HttpStatus.NOT_FOUND);
     }
     return groups;
   }
 
-  async findAllByStudentId(studentId: string): Promise<GroupInterface[]> {
-    const groups = await this.groupModel.find().populate('user', '-password -gender').exec();
+  async findOneByScheduleId(scheduleId: string): Promise<GroupInterface[]> {
+    const group = await this.groupModel.find().exec();
     const filtered = groups.filter((group) => {
-      return group.students._id == studentId;
-    }); // do poprawy
+      return group.schedule == scheduleId;
+    });
     if (!filtered || !filtered[0]) {
-      throw new HttpException('Not Found - findAllByStudentId', HttpStatus.NOT_FOUND);
+      throw new HttpException('Not Found - find by schedule id', HttpStatus.NOT_FOUND);
     }
-    return groups;
+    return group;
   }
+
+  // async findAllByStudentId(studentId: string): Promise<GroupInterface[]> {
+  //   const groups = await this.groupModel.find().populate('user', '-password -gender').exec();
+  //   const filtered = groups.filter((group) => {
+  //     return group.students._id == studentId;
+  //   }); // do poprawy
+  //   if (!filtered || !filtered[0]) {
+  //     throw new HttpException('Not Found - findAllByStudentId', HttpStatus.NOT_FOUND);
+  //   }
+  //   return groups;
+  // }
 
   async findOne(id: string) {
     const group = await this.groupModel.findOne({ _id: id }).populate('user', '-password -gender').exec();
