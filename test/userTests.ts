@@ -6,6 +6,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
 import { Role } from '../src/user/enums/role.enum';
+import { Gender } from '../src/user/enums/gender.enum';
 
 export const UserTests = () => {
   describe('USER', () => {
@@ -36,7 +37,7 @@ export const UserTests = () => {
         surname: 'Doe',
         mail: 'jon.doe@mail.com',
         password: 'password',
-        gender: 'male',
+        gender: Gender.Male,
         role: [Role.Student],
       },
       {
@@ -44,7 +45,7 @@ export const UserTests = () => {
         surname: 'Doe',
         mail: 'jon.doe@mail.com',
         password: 'password',
-        gender: 'male',
+        gender: Gender.Male,
         role: [Role.Student],
       },
       {
@@ -52,7 +53,7 @@ export const UserTests = () => {
         surname: 'Doe',
         mail: 'jon.doe@mail.com',
         password: 'password',
-        gender: 'male',
+        gender: Gender.Male,
         role: [Role.Student],
       },
       {
@@ -60,7 +61,7 @@ export const UserTests = () => {
         surname: 'Doe',
         mail: 'jon.doe@mail.com',
         password: 'password',
-        gender: 'male',
+        gender: Gender.Male,
         role: [Role.Student],
       },
       {
@@ -68,7 +69,7 @@ export const UserTests = () => {
         surname: 'Doe',
         mail: 'jon.doe@mail.com',
         password: 'password',
-        gender: 'male',
+        gender: Gender.Male,
         role: [Role.Student],
       },
     ];

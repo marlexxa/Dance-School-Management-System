@@ -1,3 +1,4 @@
+import { Gender } from '../enums/gender.enum';
 import { Role } from '../enums/role.enum';
 
 export class CreateUserDto {
@@ -5,6 +6,6 @@ export class CreateUserDto {
   surname: string;
   mail: string;
   password: string;
-  gender: string;
+  gender: Gender;
   role: Role[];
 }

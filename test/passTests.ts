@@ -6,6 +6,7 @@ import { database } from './constants';
 import * as request from 'supertest';
 import { CreateUserDto } from '../src/user/dto/create-user.dto';
 import { Role } from '../src/user/enums/role.enum';
+import { Gender } from '../src/user/enums/gender.enum';
 
 export const PassTests = () => {
   describe('PASS', () => {
@@ -18,7 +19,7 @@ export const PassTests = () => {
       surname: 'GRZYWACZ',
       mail: 'jon.doe@mail.com',
       password: 'password',
-      gender: 'male',
+      gender: Gender.Male,
       role: [Role.Student],
     };
 
