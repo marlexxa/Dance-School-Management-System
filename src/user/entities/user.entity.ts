@@ -17,6 +17,7 @@ export class User {
   @Prop({
     type: String,
     required: true,
+    unique: true,
   })
   mail: string;
   @Prop({
