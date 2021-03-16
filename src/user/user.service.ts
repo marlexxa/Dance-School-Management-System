@@ -4,10 +4,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserInterface } from './interfaces/user.interface';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<UserInterface>) {}
+  constructor(@InjectModel('User') private readonly userModel: Model<UserInterface>, private readonly mailService: MailService) {}
 
   async findAll() {
     const users = await this.userModel.find().exec();
@@ -27,6 +28,14 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     const user = await new this.userModel(createUserDto);
+    if (user) {
+      this.mailService.sendMailWhenRegistered({
+        name: user.name,
+        surname: user.surname,
+        mail: user.mail,
+        password: user.password,
+      });
+    }
     return user.save();
   }
 
@@ -35,7 +44,14 @@ export class UserService {
     if (!user) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
-    return this.findOne(id);
+    const updatedUser = await this.findOne(id);
+    this.mailService.sendMailWhenUpdated({
+      name: updatedUser.name,
+      surname: updatedUser.surname,
+      mail: updatedUser.mail,
+      password: updatedUser.password,
+    });
+    return updatedUser;
   }
 
   async remove(id: string) {
