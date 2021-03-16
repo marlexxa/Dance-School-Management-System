@@ -5,6 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { AppModule } from '../src/app.module';
+import { Role } from '../src/user/enums/role.enum';
 
 export const DepositTest = () => {
   describe('DEPOSIT', () => {
@@ -18,6 +19,7 @@ export const DepositTest = () => {
       mail: 'janina.nowak@mail.com',
       password: 'password123',
       gender: 'female',
+      role: [Role.Receptionist],
     };
 
     beforeAll(async () => {

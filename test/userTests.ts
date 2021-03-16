@@ -5,6 +5,7 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
+import { Role } from '../src/user/enums/role.enum';
 
 export const UserTests = () => {
   describe('USER', () => {
@@ -36,6 +37,7 @@ export const UserTests = () => {
         mail: 'jon.doe@mail.com',
         password: 'password',
         gender: 'male',
+        role: [Role.Student],
       },
       {
         name: 'Jon2',
@@ -43,6 +45,7 @@ export const UserTests = () => {
         mail: 'jon.doe@mail.com',
         password: 'password',
         gender: 'male',
+        role: [Role.Student],
       },
       {
         name: 'Jon3',
@@ -50,6 +53,7 @@ export const UserTests = () => {
         mail: 'jon.doe@mail.com',
         password: 'password',
         gender: 'male',
+        role: [Role.Student],
       },
       {
         name: 'Jon4',
@@ -57,6 +61,7 @@ export const UserTests = () => {
         mail: 'jon.doe@mail.com',
         password: 'password',
         gender: 'male',
+        role: [Role.Student],
       },
       {
         name: 'Jon5',
@@ -64,6 +69,7 @@ export const UserTests = () => {
         mail: 'jon.doe@mail.com',
         password: 'password',
         gender: 'male',
+        role: [Role.Student],
       },
     ];
 
@@ -79,7 +85,8 @@ export const UserTests = () => {
             expect(body.name).toEqual(`Jon${count}`);
             expect(body.surname).toEqual('Doe');
             expect(body.password).toEqual('password');
-            expect(body.surname).toEqual('Doe');
+            expect(body.gender).toEqual('male');
+            expect(body.role).toEqual(['student']);
           });
       });
     });
@@ -105,6 +112,7 @@ export const UserTests = () => {
           mail: 'ben@kenobi.pl',
           password: 'test',
           gender: 'male',
+          role: Role.Student,
         })
         .expect(({ body }) => {
           expect(body.name).toEqual('Ben');
