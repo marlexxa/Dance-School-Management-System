@@ -126,7 +126,7 @@ export const LessonTests = () => {
           endTime: '04-24-2021T13:00:00',
         })
         .expect(({ body }) => {
-          expect(body.price).toEqual(2000);
+          expect(body.priceInCash).toEqual(20);
         });
     });
 
