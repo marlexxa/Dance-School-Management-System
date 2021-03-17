@@ -50,10 +50,8 @@ export const DepositTest = () => {
         .set('Accept', 'application/json')
         .send({
           user: createdUser._id,
-          startDate: '06-06-2021',
-          endDate: '07-07-2021',
-          remainingNumber: 2,
-          price: 100,
+          amount: 120,
+          isPaid: true,
         })
         .expect(201)
         .expect(({ body }) => {
@@ -67,10 +65,8 @@ export const DepositTest = () => {
         .set('Accept', 'application/json')
         .send({
           user: '00000',
-          startDate: '06-06-2021',
-          endDate: '07-07-2021',
-          remainingNumber: 2,
-          price: 100,
+          amount: 30,
+          isPaid: true,
         })
         .expect(500);
     });
@@ -91,14 +87,12 @@ export const DepositTest = () => {
         .put(`/deposits/${fetchedDeposits[0]._id}`)
         .set('Accept', 'application/json')
         .send({
-          user: '00000',
-          startDate: '06-06-2021',
-          endDate: '07-07-2021',
-          remainingNumber: 2,
-          price: 100,
+          user: createdUser._id,
+          amount: 100,
+          isPaid: false,
         })
         .expect(({ body }) => {
-          expect(body.price).toEqual(100);
+          expect(body.amount).toEqual(100);
         });
     });
 
