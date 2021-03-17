@@ -27,9 +27,14 @@ export class LessonController {
     return this.lessonService.findAllByDate(date);
   }
 
-  @Get('user:id')
-  findAllByUserID(@Param('userID') userID: string) {
-    return this.lessonService.findAllByUserID(userID);
+  @Get('teachers/:userID')
+  findAllByTeacherID(@Param('userID') userID: string) {
+    return this.lessonService.findAllByTeacherID(userID);
+  }
+
+  @Get('students/:userID')
+  findAllByStudentID(@Param('userID') userID: string) {
+    return this.lessonService.findAllByStudentID(userID);
   }
 
   @Put(':id')

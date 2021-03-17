@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { UserInterface } from '../../user/interfaces/user.interface';
+import { User } from '../../user/entities/user.entity';
 
 @Schema()
 export class Lesson {
@@ -8,13 +9,13 @@ export class Lesson {
     type: Date,
     required: true,
   })
-  date: Date;
+  date;
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
     required: true,
   })
-  teachers: [UserInterface];
+  teachers;
   /*@Prop({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Group',
@@ -25,13 +26,13 @@ export class Lesson {
     type: String,
     required: true,
   })
-  phoneNumber: string;
+  phoneNumber;
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
     required: true,
   })
-  students: [UserInterface];
+  students;
   @Prop({
     type: Number,
     required: true,
@@ -41,12 +42,12 @@ export class Lesson {
     type: Date,
     required: true,
   })
-  startTime: Date;
+  startTime;
   @Prop({
     type: Date,
     required: true,
   })
-  endTime: Date;
+  endTime;
 }
 
 export const LessonSchema = SchemaFactory.createForClass(Lesson);

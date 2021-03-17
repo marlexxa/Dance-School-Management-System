@@ -3,18 +3,16 @@ import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { LessonInterface } from './interfaces/lesson.interface';
 import { UserInterface } from '../user/interfaces/user.interface';
-// import { GroupInterface } from '../../group/interfaces/group.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { find } from 'rxjs/operators';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class LessonService {
   constructor(
     @InjectModel('Lesson') private readonly lessonModel: Model<LessonInterface>,
-    @InjectModel('User') private readonly userModel: Model<UserInterface>,
-  ) // @InjectModel('Group') private readonly groupModel: Model<GroupInterface>,
-  {}
+    @InjectModel('User') private readonly userModel: Model<UserInterface>, // @InjectModel('Group') private readonly groupModel: Model<GroupInterface>,
+  ) {}
 
   async create(createLessonDto: CreateLessonDto) {
     const lesson = await new this.lessonModel(createLessonDto);
@@ -22,7 +20,11 @@ export class LessonService {
   }
 
   async findAll(): Promise<LessonInterface[]> {
-    const lessons = await this.lessonModel.find().exec();
+    const lessons = await this.lessonModel
+      .find()
+      .populate({ path: 'students', model: User, select: '-password' })
+      .populate({ path: 'teachers', model: User, select: '-password' })
+      .exec();
     if (!lessons || !lessons[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
@@ -30,7 +32,11 @@ export class LessonService {
   }
 
   async findByID(id: string): Promise<LessonInterface> {
-    const lesson = await this.lessonModel.findOne({ _id: id }).exec();
+    const lesson = await this.lessonModel
+      .findOne({ _id: id })
+      .populate({ path: 'students', model: User, select: '-password' })
+      .populate({ path: 'teachers', model: User, select: '-password' })
+      .exec();
     if (!lesson) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
@@ -39,23 +45,39 @@ export class LessonService {
 
   async findAllByDate(date: Date): Promise<LessonInterface[]> {
     const lessons = await this.lessonModel.find({ date: date }).exec();
-    /*const filtered = lessons.filter((lesson) => {
-            return lesson.date == date;
-        });*/
     if (!lessons || !lessons[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
     return lessons;
   }
 
-  async findAllByUserID(userID: string): Promise<LessonInterface[]> {
+  async findAllByTeacherID(userID: string): Promise<LessonInterface[]> {
     const lessons = await this.lessonModel
       .find({
-        $or: [{ teachers: { $elemMatch: { _id: userID } } }, { students: { $elemMatch: { _id: userID } } }],
+        teachers: {
+          $elemMatch: { $in: { _id: userID } },
+        },
       })
-      .populate('user', '-password -gender')
+      .populate({ path: 'students', model: User, select: '-password' })
+      .populate({ path: 'teachers', model: User, select: '-password' })
       .exec();
+    if (!lessons || !lessons[0]) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
 
+    return lessons;
+  }
+
+  async findAllByStudentID(userID: string): Promise<LessonInterface[]> {
+    const lessons = await this.lessonModel
+      .find({
+        students: {
+          $elemMatch: { $in: { _id: userID } },
+        },
+      })
+      .populate({ path: 'students', model: User, select: '-password' })
+      .populate({ path: 'teachers', model: User, select: '-password' })
+      .exec();
     if (!lessons || !lessons[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
