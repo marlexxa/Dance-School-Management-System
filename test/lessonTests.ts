@@ -5,6 +5,8 @@ import * as mongoose from 'mongoose';
 import { database } from './constants';
 import * as request from 'supertest';
 import { CreateUserDto } from '../src/user/dto/create-user.dto';
+import { Gender } from '../src/user/enums/gender.enum';
+import { Role } from '../src/user/enums/role.enum';
 // import { CreateGroupDto } from '../src/group/dto/create-group.dto';
 
 export const LessonTests = () => {
@@ -19,7 +21,8 @@ export const LessonTests = () => {
       surname: 'GRZYWACZ',
       mail: 'jon.doe@mail.com',
       password: 'password',
-      gender: 'male',
+      gender: Gender.Male,
+      role: [Role.Receptionist],
     };
 
     // const createGroupDto: createGroupDto = {
