@@ -1,26 +1,26 @@
-import { INestApplication } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../src/app.module';
 import * as mongoose from 'mongoose';
 import { database } from './constants';
 import * as request from 'supertest';
-import { CreateUserDto } from '../src/user/dto/create-user.dto';
+import { Test, TestingModule } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { AppModule } from '../src/app.module';
 import { Role } from '../src/user/enums/role.enum';
 import { Gender } from '../src/user/enums/gender.enum';
 
-export const PassTests = () => {
-  describe('PASS', () => {
+export const DepositTest = () => {
+  describe('DEPOSIT', () => {
     let app: INestApplication;
     let createdUser;
-    let fetchedPasses;
+    let fetchedDeposits;
 
     const createUserDto: CreateUserDto = {
-      name: 'JANUSZ',
-      surname: 'GRZYWACZ',
-      mail: 'jon.doe@mail.com',
-      password: 'password',
-      gender: Gender.Male,
-      role: [Role.Student],
+      name: 'JANINA',
+      surname: 'Nowak',
+      mail: 'janina.nowak@mail.com',
+      password: 'password123',
+      gender: Gender.Female,
+      role: [Role.Receptionist],
     };
 
     beforeAll(async () => {
@@ -47,16 +47,14 @@ export const PassTests = () => {
       await mongoose.disconnect(done);
     });
 
-    test('should create pass to existing user', async () => {
+    it('should create deposit for user', async () => {
       return request(app.getHttpServer())
-        .post('/passes')
+        .post('/deposits')
         .set('Accept', 'application/json')
         .send({
           user: createdUser._id,
-          startDate: '04-24-2021',
-          endDate: '04-24-2021',
-          remainingNumber: 20,
-          price: 80,
+          amount: 120,
+          isPaid: true,
         })
         .expect(201)
         .expect(({ body }) => {
@@ -64,49 +62,45 @@ export const PassTests = () => {
         });
     });
 
-    test('should not create pass to not existing user', async () => {
+    it('should not create deposit to not existing user', async () => {
       return request(app.getHttpServer())
-        .post('/passes')
+        .post('/deposits')
         .set('Accept', 'application/json')
         .send({
-          user: 'someVALUE',
-          startDate: '04-24-2021',
-          endDate: '04-24-2021',
-          remainingNumber: 20,
-          price: 80,
+          user: '00000',
+          amount: 30,
+          isPaid: true,
         })
         .expect(500);
     });
 
-    test('should get allPasses', async () => {
+    test('should get allDeposits', async () => {
       return request(app.getHttpServer())
-        .get('/passes')
+        .get('/deposits')
         .set('Accept', 'application/json')
         .expect(200)
         .expect(({ body }) => {
           expect(body.length).toEqual(1);
-          fetchedPasses = body;
+          fetchedDeposits = body;
         });
     });
 
-    test('should update pass', async () => {
+    test('should update deposit', async () => {
       return request(app.getHttpServer())
-        .put(`/passes/${fetchedPasses[0]._id}`)
+        .put(`/deposits/${fetchedDeposits[0]._id}`)
         .set('Accept', 'application/json')
         .send({
           user: createdUser._id,
-          startDate: '04-24-2021',
-          endDate: '04-24-2021',
-          remainingNumber: 20,
-          price: 2000,
+          amount: 100,
+          isPaid: false,
         })
         .expect(({ body }) => {
-          expect(body.price).toEqual(2000);
+          expect(body.amount).toEqual(100);
         });
     });
 
-    test('should delete pass', async () => {
-      return request(app.getHttpServer()).delete(`/passes/${fetchedPasses[0]._id}`).set('Accept', 'application/json').expect(200);
+    it('should delete last deposit', async () => {
+      return request(app.getHttpServer()).delete(`/deposits/${fetchedDeposits[0]._id}`).set('Accept', 'application/json').expect(200);
     });
   });
 };

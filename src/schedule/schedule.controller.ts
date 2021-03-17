@@ -3,7 +3,7 @@ import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 
-@Controller('schedule')
+@Controller('schedules')
 export class ScheduleController {
   constructor(private readonly scheduleService: ScheduleService) {}
 
@@ -19,16 +19,21 @@ export class ScheduleController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.scheduleService.findOne(+id);
+    return this.scheduleService.findOne(id);
+  }
+
+  @Get('lesson/:id')
+  findScheduleByLesson(@Param('id') id: string) {
+    return this.scheduleService.findScheduleByLesson(id);
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateScheduleDto: UpdateScheduleDto) {
-    return this.scheduleService.update(+id, updateScheduleDto);
+    return this.scheduleService.update(id, updateScheduleDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.scheduleService.remove(+id);
+    return this.scheduleService.remove(id);
   }
 }
