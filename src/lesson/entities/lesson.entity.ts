@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { UserInterface } from '../../user/interfaces/user.interface';
 import { User } from '../../user/entities/user.entity';
 
 @Schema()
