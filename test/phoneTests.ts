@@ -5,6 +5,8 @@ import * as mongoose from 'mongoose';
 import { database } from './constants';
 import { CreateUserDto } from '../src/user/dto/create-user.dto';
 import * as request from 'supertest';
+import { Role } from '../src/user/enums/role.enum';
+import { Gender } from '../src/user/enums/gender.enum';
 
 export const PhoneTests = () => {
   describe('PHONE', () => {
@@ -21,7 +23,8 @@ export const PhoneTests = () => {
       surname: 'GRZYWACZ',
       mail: 'jon.doe@mail.com',
       password: 'password',
-      gender: 'male',
+      gender: Gender.Male,
+      role: [Role.Student],
     };
 
     beforeAll(async () => {

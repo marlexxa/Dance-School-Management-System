@@ -5,6 +5,8 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
+import { Role } from '../src/user/enums/role.enum';
+import { Gender } from '../src/user/enums/gender.enum';
 
 export const UserTests = () => {
   describe('USER', () => {
@@ -33,37 +35,42 @@ export const UserTests = () => {
       {
         name: 'Jon1',
         surname: 'Doe',
-        mail: 'jon.doe@mail.com',
+        mail: 'jon.doe1@mail.com',
         password: 'password',
-        gender: 'male',
+        gender: Gender.Male,
+        role: [Role.Student],
       },
       {
         name: 'Jon2',
         surname: 'Doe',
-        mail: 'jon.doe@mail.com',
+        mail: 'jon.doe2@mail.com',
         password: 'password',
-        gender: 'male',
+        gender: Gender.Male,
+        role: [Role.Student],
       },
       {
         name: 'Jon3',
         surname: 'Doe',
-        mail: 'jon.doe@mail.com',
+        mail: 'jon.doe3@mail.com',
         password: 'password',
-        gender: 'male',
+        gender: Gender.Male,
+        role: [Role.Student],
       },
       {
         name: 'Jon4',
         surname: 'Doe',
-        mail: 'jon.doe@mail.com',
+        mail: 'jon.doe4@mail.com',
         password: 'password',
-        gender: 'male',
+        gender: Gender.Male,
+        role: [Role.Student],
       },
       {
         name: 'Jon5',
         surname: 'Doe',
-        mail: 'jon.doe@mail.com',
+        mail: 'jon.doe5@mail.com',
         password: 'password',
-        gender: 'male',
+        gender: Gender.Male,
+        role: [Role.Student],
       },
     ];
 
@@ -78,8 +85,10 @@ export const UserTests = () => {
           .expect(({ body }) => {
             expect(body.name).toEqual(`Jon${count}`);
             expect(body.surname).toEqual('Doe');
+            expect(body.mail).toEqual(`jon.doe${count}@mail.com`);
             expect(body.password).toEqual('password');
-            expect(body.surname).toEqual('Doe');
+            expect(body.gender).toEqual('male');
+            expect(body.role).toEqual(['student']);
           });
       });
     });
@@ -105,10 +114,31 @@ export const UserTests = () => {
           mail: 'ben@kenobi.pl',
           password: 'test',
           gender: 'male',
+          role: Role.Student,
         })
         .expect(({ body }) => {
           expect(body.name).toEqual('Ben');
+          expect(body.surname).toEqual('Kenobi');
+          expect(body.mail).toEqual('ben@kenobi.pl');
+          expect(body.password).toEqual('test');
+          expect(body.gender).toEqual('male');
+          expect(body.role).toEqual(['student']);
         });
+    });
+
+    test('should not update if e-mail is in use', async () => {
+      return request(app.getHttpServer())
+        .put(`/users/${users[0]._id}`)
+        .set('Accept', 'application/json')
+        .send({
+          name: 'Ben',
+          surname: 'Kenobi',
+          mail: 'jon.doe2@mail.com',
+          password: 'test',
+          gender: 'male',
+          role: Role.Student,
+        })
+        .expect(500);
     });
 
     test('should delete last User', async () => {
