@@ -64,7 +64,6 @@ export class LessonService {
     if (!lessons || !lessons[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
-
     return lessons;
   }
 
