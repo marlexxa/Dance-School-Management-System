@@ -3,9 +3,9 @@ import { UserInterface } from '../../user/interfaces/user.interface';
 
 export class CreateLessonDto {
   date: Date;
-  teachers: [UserInterface];
+  teachers: UserInterface[];
   // group: GroupInterface;
-  students: [UserInterface];
+  students: UserInterface[];
   priceInCash: number;
   startTime: Date;
   endTime: Date;

@@ -4,9 +4,9 @@ import { UserInterface } from 'src/user/interfaces/user.interface';
 
 export interface LessonInterface extends Document {
   date: Date;
-  teachers: [UserInterface];
+  teachers: UserInterface[];
   // group: GroupInterface[];
-  students: [UserInterface];
+  students: UserInterface[];
   priceInCash: number;
   startTime: Date;
   endTime: Date;
