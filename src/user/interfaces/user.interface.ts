@@ -1,7 +1,12 @@
 import { Document } from 'mongoose';
+import { Gender } from '../enums/gender.enum';
+import { Role } from '../enums/role.enum';
 
 export interface UserInterface extends Document {
-  readonly id?: string;
-  readonly name: string;
-  readonly surname: string;
+  name: string;
+  surname: string;
+  mail: string;
+  password: string;
+  gender: Gender;
+  role: Role[];
 }
