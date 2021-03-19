@@ -18,9 +18,9 @@ export class PaymentController {
     return this.paymentService.findAll();
   }
 
-  @Get('users/:userId')
-  findAllPaymentsForUser(@Param('userId') userId: User) {
-    return this.paymentService.findAllPaymentsForUser(userId);
+  @Get('users/:userID')
+  findAllPaymentsForUser(@Param('userID') userID: string) {
+    return this.paymentService.findAllByUserID(userID);
   }
 
   @Get(':id')

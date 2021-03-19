@@ -33,15 +33,15 @@ export class PaymentService {
     return payment;
   }
 
-  async findAllPaymentsForUser(userId: User) {
-    const payment = await this.paymentModel.find({ User }).exec();
-    let paymentFiltered = payment.filter((payment) => {
-      return payment.user == userId;
+  async findAllByUserID(userID: string) {
+    const payments = await this.paymentModel.find().populate('user', '-password -gender').exec();
+    let filtered = payments.filter((payment) => {
+      return payment.user._id == userID;
     });
-    if (!paymentFiltered || !paymentFiltered[0]) {
+    if (!filtered || !filtered[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
-    return paymentFiltered;
+    return filtered;
   }
 
   async findOne(id: string) {
