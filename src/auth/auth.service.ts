@@ -2,32 +2,32 @@ import { HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/comm
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { UserInterface } from '../user/interfaces/user.interface';
-import { User } from '../user/entities/user.entity';
+import { TokenPayload } from './interfaces/tokenPayload.interface';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService, private jwtService: JwtService) {}
+  constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}
 
   async validateUser(mail: string, hashedPassword: string): Promise<any> {
     try {
       const user = await this.userService.findByEmail(mail);
       const isPasswordMaatching = await bcrypt.compare(hashedPassword, user.password);
+      user.password = undefined;
       if (!isPasswordMaatching) {
         throw new HttpException('Wrong e-mail or password', HttpStatus.BAD_REQUEST);
       }
-      const { password, ...userDataWithoutPassword } = user;
-      return userDataWithoutPassword;
+      return user;
     } catch (error) {
       throw new HttpException('Wrong e-mail or password', HttpStatus.BAD_REQUEST);
     }
   }
 
-  async login(user: UserInterface): Promise<any> {
-    const payload = { mail: user.mail, id: user._id };
-
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  getCookieWithJwtToken(userID: string) {
+    const payload: TokenPayload = { userID };
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET_KEY,
+      expiresIn: process.env.JWT_TOKEN_EXPIRESIN,
+    });
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${process.env.JWT_TOKEN_EXPIRESIN}s`;
   }
 }
