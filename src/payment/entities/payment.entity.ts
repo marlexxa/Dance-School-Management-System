@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { Deposit } from 'src/deposit/entities/deposit.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Deposit } from '../../deposit/entities/deposit.entity';
+import { User } from '../../user/entities/user.entity';
 
 @Schema()
 export class Payment {
@@ -19,11 +19,15 @@ export class Payment {
   paymentMethod: string;
 
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Deposit',
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Deposit',
+      },
+    ],
     required: false,
   })
-  deposits: Deposit;
+  deposit: Deposit[];
 }
 
 export const PaymentSchema = SchemaFactory.createForClass(Payment);

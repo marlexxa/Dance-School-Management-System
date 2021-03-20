@@ -5,5 +5,5 @@ import { UserInterface } from 'src/user/interfaces/user.interface';
 export interface PaymentInterface extends Document {
   user: UserInterface;
   paymentMethod: string;
-  deposits: DepositInterface;
+  deposit: DepositInterface[];
 }

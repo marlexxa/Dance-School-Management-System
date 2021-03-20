@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common'
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
-import { User } from 'src/user/entities/user.entity';
 
 @Controller('payments')
 export class PaymentController {

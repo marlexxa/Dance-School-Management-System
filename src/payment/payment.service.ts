@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Req } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'src/user/entities/user.entity';
 import { UserInterface } from 'src/user/interfaces/user.interface';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
@@ -26,7 +25,7 @@ export class PaymentService {
   }
 
   async findAll() {
-    const payment = await this.paymentModel.find().exec();
+    const payment = await this.paymentModel.find().populate('user', '-gender -password').populate('deposit', '-user').exec();
     if (!payment || !payment[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
@@ -34,7 +33,7 @@ export class PaymentService {
   }
 
   async findAllByUserID(userID: string) {
-    const payments = await this.paymentModel.find().populate('user', '-password -gender').exec();
+    const payments = await this.paymentModel.find().populate('user', '-password -gender').populate('deposit', '-user').exec();
     let filtered = payments.filter((payment) => {
       return payment.user._id == userID;
     });
@@ -46,7 +45,7 @@ export class PaymentService {
 
   async findOne(id: string) {
     console.log(id);
-    const payment = await this.paymentModel.findOne({ _id: id }).exec();
+    const payment = await this.paymentModel.findOne({ _id: id }).populate('user', '-password -gender').populate('deposit', '-user').exec();
     if (!payment) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
