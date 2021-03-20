@@ -7,6 +7,7 @@ import { UserTests } from './userTests';
 import { PhoneTests } from './phoneTests';
 import { DepositTest } from './depositTests';
 import { LessonTests } from './lessonTests';
+import { PaymentTest } from './paymentTests';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -29,4 +30,5 @@ describe('AppController (e2e)', () => {
   PhoneTests();
   DepositTest();
   LessonTests();
+  PaymentTest();
 });
