@@ -33,13 +33,13 @@ export class ScheduleService {
   async findScheduleByLesson(id: string) {
     const schedules = await this.scheduleModel.find().exec();
 
-    schedules.forEach((schedule) => {
-      schedule.lessons.forEach((lesson) => {
-        if (lesson._id == id) {
-          return schedule;
-        }
-      });
-    });
+    // schedules.forEach((schedule) => {
+    //   schedule.lessons.forEach((lesson) => {
+    //     if (lesson._id == id) {
+    //       return schedule;
+    //     }
+    //   });
+    // });
 
     throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
   }

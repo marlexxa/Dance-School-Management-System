@@ -3,7 +3,7 @@ import { LessonService } from './lesson.service';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 
-@Controller('lesson')
+@Controller('lessons')
 export class LessonController {
   constructor(private readonly lessonService: LessonService) {}
 
@@ -13,22 +13,37 @@ export class LessonController {
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.lessonService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.lessonService.findOne(+id);
+  findByID(@Param('id') id: string) {
+    return this.lessonService.findByID(id);
+  }
+
+  @Get('dates/:date')
+  findAllByDate(@Param('date') date: Date) {
+    return this.lessonService.findAllByDate(date);
+  }
+
+  @Get('teachers/:userID')
+  findAllByTeacherID(@Param('userID') userID: string) {
+    return this.lessonService.findAllByTeacherID(userID);
+  }
+
+  @Get('students/:userID')
+  findAllByStudentID(@Param('userID') userID: string) {
+    return this.lessonService.findAllByStudentID(userID);
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateLessonDto: UpdateLessonDto) {
-    return this.lessonService.update(+id, updateLessonDto);
+    return this.lessonService.update(id, updateLessonDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.lessonService.remove(+id);
+    return this.lessonService.remove(id);
   }
 }

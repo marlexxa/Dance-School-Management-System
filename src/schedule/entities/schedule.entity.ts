@@ -5,11 +5,11 @@ import { Lesson } from '../../lesson/entities/lesson.entity';
 @Schema()
 export class Schedule {
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'Lesson',
     required: true,
   })
-  lessons: string[];
+  lessons;
 }
 
 export const ScheduleSchema = SchemaFactory.createForClass(Schedule);
