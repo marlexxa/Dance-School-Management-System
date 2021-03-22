@@ -8,8 +8,9 @@ import { CreateUserDto } from '../src/user/dto/create-user.dto';
 import { CreateDepositDto } from '../src/deposit/dto/create-deposit.dto';
 import { Role } from '../src/user/enums/role.enum';
 import { Gender } from '../src/user/enums/gender.enum';
+import { PaymentMethod } from '../src/payment/enums/paymentMethod.enum';
 
-export const PaymentTest = () => {
+export const PaymentTests = () => {
   describe('PAYMENT', () => {
     let app: INestApplication;
     let createdUser;
@@ -69,13 +70,13 @@ export const PaymentTest = () => {
         .set('Accept', 'application/json')
         .send({
           user: createdUser._id,
-          paymentMethod: 'Card',
+          paymentMethod: PaymentMethod.Card,
           deposit: [createdDeposit._id],
         })
         .expect(201)
         .expect(({ body }) => {
           expect(body.user).toEqual(createdUser._id);
-          expect(body.paymentMethod).toEqual('Card');
+          expect(body.paymentMethod).toEqual('card');
           expect(body.deposit[0]).toEqual(createdDeposit._id);
         });
     });
@@ -86,7 +87,7 @@ export const PaymentTest = () => {
         .set('Accept', 'application/json')
         .send({
           user: '60564e4e0e126a286befdc27',
-          paymentMethod: 'Card',
+          paymentMethod: 'card',
           deposit: [createdDeposit._id],
         })
         .expect(404);
@@ -111,7 +112,7 @@ export const PaymentTest = () => {
         .expect(200)
         .expect(({ body }) => {
           expect(body.length).toEqual(1);
-          expect(body[0].paymentMethod).toEqual('Card');
+          expect(body[0].paymentMethod).toEqual('card');
         });
     });
 

@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Deposit } from '../../deposit/entities/deposit.entity';
 import { User } from '../../user/entities/user.entity';
+import { PaymentMethod } from '../enums/paymentMethod.enum';
 
 @Schema()
 export class Payment {
@@ -16,7 +17,7 @@ export class Payment {
     type: String,
     required: true,
   })
-  paymentMethod: string;
+  paymentMethod: PaymentMethod;
 
   @Prop({
     type: [
