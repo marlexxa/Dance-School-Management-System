@@ -5,7 +5,7 @@
 Projekt zespołowy wykonany w ramach kursu CodersCamp 2020
 
 - Uczestnicy projektu:
-- Marlena - TechLead
+- Marlena - Tech Lead
 - Radek - Development Manager
 - Joanna - Product Owner
 - Maciej
@@ -18,7 +18,6 @@ Celem projektu było napisanie aplikacji wykorzystującej dotychczas nabytą wie
 
 ### Zasady wykonywania projektu:
 
-- Node.js / Express
 - REST API
 - zakładanie konta użytkownika
 - autoryzacja i autentykacja użytkownika, różne uprawnienia. Wykorzystanie Json Web Token.
@@ -32,22 +31,21 @@ Aplikacja zaprojektowana do zarządzania szkołą tańca. Aplikacja backendowa p
 
 ### Wykorzystane technologie:
 
-- NodeJs / NestJS
+- Node.js / NestJS
 - MongoDB / Mongoose
-- Typescript
+- TypeScript
 
 ### Uruchomienie projektu
 
-1. Zainstaluj MongoDB
-1. Baza danych jest dostępna pod adresem localhost:27017/
+1. Zainstaluj _MongoDB_
+1. Baza danych jest dostępna pod adresem `localhost:27017/`
 1. Stwórz bazę o nazwie dance_school
-1. Zainstaluj zależności: npm install
-1. Uruchom serwer developerski: npm run start:dev
-1. Aplikacja jest dostępna pod adresem localhost:3000/
-1. Swagger jest dostępny pod adresem localhost:3000/api/
-1. Uruchomienie testów: npm run test:e2e
+1. Zainstaluj zależności: `npm install`
+1. Uruchom serwer developerski: `npm run start:dev`
+1. Aplikacja jest dostępna pod adresem `localhost:3000/`
+1. Swagger jest dostępny pod adresem `localhost:3000/api/`
+1. Uruchomienie testów: `npm run test:e2e`
 
-### Live:
+### Demo:
 
-Heroku:
-Swagger:
+https://dance-school-management-system.herokuapp.com/api/
