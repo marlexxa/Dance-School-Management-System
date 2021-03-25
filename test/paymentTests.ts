@@ -87,7 +87,7 @@ export const PaymentTests = () => {
         .set('Accept', 'application/json')
         .send({
           user: '60564e4e0e126a286befdc27',
-          paymentMethod: 'card',
+          paymentMethod: PaymentMethod.Card,
           deposit: [createdDeposit._id],
         })
         .expect(404);
@@ -122,11 +122,11 @@ export const PaymentTests = () => {
         .set('Accept', 'application/json')
         .send({
           user: createdUser._id,
-          paymentMethod: 'Bank Transfer',
+          paymentMethod: PaymentMethod.Cash,
           deposit: [createdDeposit._id],
         })
         .expect(({ body }) => {
-          expect(body.paymentMethod).toEqual('Bank Transfer');
+          expect(body.paymentMethod).toEqual('cash');
         });
     });
 

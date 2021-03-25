@@ -1,9 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Req } from '@nestjs/common';
+import { Body, HttpException, HttpStatus, Injectable, Req } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserInterface } from 'src/user/interfaces/user.interface';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { PaymentMethod } from './enums/paymentMethod.enum';
 import { PaymentInterface } from './interfaces/payment.interface';
 
 @Injectable()
@@ -53,6 +54,15 @@ export class PaymentService {
   }
 
   async update(id: string, updatePaymentDto: UpdatePaymentDto) {
+    let error = true;
+    Object.values(PaymentMethod).forEach((method) => {
+      if (updatePaymentDto.paymentMethod == method) {
+        error = false;
+      }
+    });
+    if (error) {
+      throw new HttpException('Invalid payment method', HttpStatus.BAD_REQUEST);
+    }
     const payment = await this.paymentModel.findByIdAndUpdate({ _id: id }, updatePaymentDto).exec();
     if (!payment) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);

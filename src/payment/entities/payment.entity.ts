@@ -15,6 +15,7 @@ export class Payment {
 
   @Prop({
     type: String,
+    enum: PaymentMethod,
     required: true,
   })
   paymentMethod: PaymentMethod;
