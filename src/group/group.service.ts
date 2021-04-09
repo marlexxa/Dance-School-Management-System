@@ -70,15 +70,15 @@ export class GroupService {
     return groups;
   }
 
-  async findOneByScheduleId(scheduleId: string): Promise<GroupInterface[]> {
-    const group = await this.groupModel.find().exec();
-    const filtered = groups.filter((group) => {
-      return group.schedule == scheduleId;
+  async findOneByScheduleId(scheduleId: string) {
+    const groups = await this.groupModel.find().populate('schedule').exec();
+
+    groups.forEach((group) => {
+      if (group.schedule._id == scheduleId) {
+        return group;
+      }
     });
-    if (!filtered || !filtered[0]) {
-      throw new HttpException('Not Found - find by schedule id', HttpStatus.NOT_FOUND);
-    }
-    return group;
+    throw new HttpException('Not Found - find by schedule id', HttpStatus.NOT_FOUND);
   }
 
   // async findAllByStudentId(studentId: string): Promise<GroupInterface[]> {
