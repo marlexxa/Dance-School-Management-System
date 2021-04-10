@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
@@ -6,7 +5,10 @@ import * as mongoose from 'mongoose';
 import { database } from './constants';
 import { CreateUserDto } from '../src/user/dto/create-user.dto';
 import * as request from 'supertest';
-export const PhoneTest = () => {
+import { Role } from '../src/user/enums/role.enum';
+import { Gender } from '../src/user/enums/gender.enum';
+
+export const PhoneTests = () => {
   describe('PHONE', () => {
     let app: INestApplication;
     let createdUser;
@@ -21,7 +23,8 @@ export const PhoneTest = () => {
       surname: 'GRZYWACZ',
       mail: 'jon.doe@mail.com',
       password: 'password',
-      gender: 'male',
+      gender: Gender.Male,
+      role: [Role.Student],
     };
 
     beforeAll(async () => {

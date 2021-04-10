@@ -1,5 +1,6 @@
+import { Document } from 'mongoose';
 import { LessonInterface } from '../../lesson/interfaces/lesson.interface';
 
-export class CreateScheduleDto {
+export interface ScheduleInterface extends Document {
   lessons: [LessonInterface];
 }

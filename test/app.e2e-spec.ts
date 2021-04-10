@@ -1,12 +1,13 @@
-/* eslint-disable prettier/prettier */
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { PassTests } from './passTests';
-import { UserTest } from './userTests';
-import { PhoneTest } from './phoneTests';
-import { Phone } from 'src/phone/entities/phone.entity';
+import { UserTests } from './userTests';
+import { PhoneTests } from './phoneTests';
+import { DepositTest } from './depositTests';
+import { LessonTests } from './lessonTests';
+import { PaymentTests } from './paymentTests';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -24,7 +25,10 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer()).get('/').expect(200).expect('Hello World!');
   });
 
-  UserTest();
+  UserTests();
   PassTests();
-  PhoneTest();
+  PhoneTests();
+  DepositTest();
+  LessonTests();
+  PaymentTests();
 });
