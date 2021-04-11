@@ -6,12 +6,15 @@ import { UserInterface } from '../user/interfaces/user.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../user/entities/user.entity';
+import { Group } from '../group/entities/group.entity';
+import { GroupInterface } from '../group/interfaces/group.interface';
 
 @Injectable()
 export class LessonService {
   constructor(
     @InjectModel('Lesson') private readonly lessonModel: Model<LessonInterface>,
-    @InjectModel('User') private readonly userModel: Model<UserInterface>, // @InjectModel('Group') private readonly groupModel: Model<GroupInterface>,
+    @InjectModel('User') private readonly userModel: Model<UserInterface>,
+    @InjectModel('Group') private readonly groupModel: Model<GroupInterface>,
   ) {}
 
   async create(createLessonDto: CreateLessonDto) {
@@ -84,16 +87,22 @@ export class LessonService {
     return lessons;
   }
 
-  // async findAllByGroupID(groupID: string): Promise<LessonInterface[]> {
-  //   const lessons = await this.lessonModel.find().populate('group').exec();
-  //   const filtered = lessons.filter((lesson) => {
-  //     return lesson.group._id == groupID;
-  //   });
-  //   if (!filtered || !filtered[0]) {
-  //     throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
-  //   }
-  //   return filtered;
-  // }
+  async findAllByGroupID(groupID: string): Promise<LessonInterface[]> {
+    console.log(groupID);
+    const lessons = await this.lessonModel
+      .find()
+      .populate({ path: 'students', model: User, select: '-password' })
+      .populate({ path: 'teachers', model: User, select: '-password' })
+      .populate('group')
+      .exec();
+    lessons.filter((lesson) => {
+      return lesson.group._id == groupID;
+    });
+    if (!lessons || !lessons[0]) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return lessons;
+  }
 
   async update(id: string, updateLessonDto: UpdateLessonDto) {
     const lesson = await this.lessonModel.findByIdAndUpdate({ _id: id }, updateLessonDto).exec();
