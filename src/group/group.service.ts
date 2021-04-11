@@ -5,11 +5,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { GroupInterface } from './interfaces/group.interface';
 import { UserInterface } from 'src/user/interfaces/user.interface';
+import { ScheduleInterface } from '../schedule/interfaces/schedule.interface';
+import { User } from '../user/entities/user.entity';
+import { Schedule } from '../schedule/entities/schedule.entity';
 @Injectable()
 export class GroupService {
   constructor(
     @InjectModel('Group') private readonly groupModel: Model<GroupInterface>,
     @InjectModel('User') private readonly userModel: Model<UserInterface>,
+    @InjectModel('Schedule') private readonly scheduleModel: Model<ScheduleInterface>,
   ) {}
 
   async create(createGroupDto: CreateGroupDto) {
@@ -18,7 +22,12 @@ export class GroupService {
   }
 
   async findAll(): Promise<GroupInterface[]> {
-    const groups = await this.groupModel.find().exec();
+    const groups = await this.groupModel
+      .find()
+      .populate({ path: 'students', model: User, select: '-password' })
+      .populate({ path: 'teachers', model: User, select: '-password' })
+      .populate('schedule')
+      .exec();
     if (!groups || !groups[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
@@ -26,7 +35,12 @@ export class GroupService {
   }
 
   async findAllByAdvanceLevel(advanceLevel: string): Promise<GroupInterface[]> {
-    const groups = await this.groupModel.find().exec();
+    const groups = await this.groupModel
+      .find({ advanceLevel: advanceLevel })
+      .populate({ path: 'students', model: User, select: '-password' })
+      .populate({ path: 'teachers', model: User, select: '-password' })
+      .populate('schedule')
+      .exec();
     const filtered = groups.filter((group) => {
       return group.advanceLevel == advanceLevel;
     });
@@ -37,7 +51,12 @@ export class GroupService {
   }
 
   async findAllByDanceType(danceType: string): Promise<GroupInterface[]> {
-    const groups = await this.groupModel.find().exec();
+    const groups = await this.groupModel
+      .find({ danceType: danceType })
+      .populate({ path: 'students', model: User, select: '-password' })
+      .populate({ path: 'teachers', model: User, select: '-password' })
+      .populate('schedule')
+      .exec();
     const filtered = groups.filter((group) => {
       return group.danceType == danceType;
     });
@@ -48,52 +67,60 @@ export class GroupService {
   }
 
   async findAllByTeacherId(teacherId: string): Promise<GroupInterface[]> {
-    const groups = await this.groupModel.find().populate('user', '-password -gender').exec();
-    const temp = [];
-    // rozw 1
-    groups.forEach((group) => {
-      group.teachers.forEach((teacher) => {
-        if (teacher._id == teacherId) {
-          temp.push(teacher);
-        }
-      });
-    });
-    // rozwiazanie 2 na wszelki
-    // groups.forEach((group) => {
-    //   group.teachers.filter((teacher) => {
-    //     return teacher._id == teacherId;
-    //   })
-    // });
-    if (temp === undefined || temp.length === 0) {
-      throw new HttpException('Not Found - findAllByTeacherId', HttpStatus.NOT_FOUND);
+    const groups = await this.groupModel
+      .find({
+        teachers: {
+          $elemMatch: { $in: { _id: teacherId } },
+        },
+      })
+      .populate({ path: 'students', model: User, select: '-password' })
+      .populate({ path: 'teachers', model: User, select: '-password' })
+      .populate('schedule')
+      .exec();
+    if (!groups || !groups[0]) {
+      throw new HttpException('Not Found - findAllByStudentId', HttpStatus.NOT_FOUND);
     }
     return groups;
   }
 
   async findOneByScheduleId(scheduleId: string) {
-    const groups = await this.groupModel.find().populate('schedule').exec();
-
-    groups.forEach((group) => {
-      if (group.schedule._id == scheduleId) {
-        return group;
-      }
-    });
-    throw new HttpException('Not Found - find by schedule id', HttpStatus.NOT_FOUND);
+    const groups = await this.groupModel
+      .find()
+      .populate({ path: 'students', model: User, select: '-password' })
+      .populate({ path: 'teachers', model: User, select: '-password' })
+      .populate('schedule')
+      .find({ 'schedule._id': scheduleId })
+      .exec();
+    if (!groups || !groups[0]) {
+      throw new HttpException('Not Found - findAllByStudentId', HttpStatus.NOT_FOUND);
+    }
+    return groups;
   }
 
-  // async findAllByStudentId(studentId: string): Promise<GroupInterface[]> {
-  //   const groups = await this.groupModel.find().populate('user', '-password -gender').exec();
-  //   const filtered = groups.filter((group) => {
-  //     return group.students._id == studentId;
-  //   }); // do poprawy
-  //   if (!filtered || !filtered[0]) {
-  //     throw new HttpException('Not Found - findAllByStudentId', HttpStatus.NOT_FOUND);
-  //   }
-  //   return groups;
-  // }
+  async findAllByStudentId(studentId: string): Promise<GroupInterface[]> {
+    const groups = await this.groupModel
+      .find({
+        students: {
+          $elemMatch: { $in: { _id: studentId } },
+        },
+      })
+      .populate({ path: 'students', model: User, select: '-password' })
+      .populate({ path: 'teachers', model: User, select: '-password' })
+      .populate('schedule')
+      .exec();
+    if (!groups || !groups[0]) {
+      throw new HttpException('Not Found - findAllByStudentId', HttpStatus.NOT_FOUND);
+    }
+    return groups;
+  }
 
   async findOne(id: string) {
-    const group = await this.groupModel.findOne({ _id: id }).populate('user', '-password -gender').exec();
+    const group = await this.groupModel
+      .findOne({ _id: id })
+      .populate({ path: 'students', model: User, select: '-password' })
+      .populate({ path: 'teachers', model: User, select: '-password' })
+      .populate('schedule')
+      .exec();
     if (!group) {
       throw new HttpException('Group not found', HttpStatus.NOT_FOUND);
     }

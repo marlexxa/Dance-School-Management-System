@@ -13,20 +13,20 @@ export class Group {
     lowercase: true,
     required: true,
   })
-  danceType: DanceType;
+  danceType;
   @Prop({
     type: String,
     enum: AdvanceLevel,
     lowercase: true,
     required: true,
   })
-  advanceLevel: AdvanceLevel;
+  advanceLevel;
   @Prop({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
     required: true,
   })
-  teachers: User[];
+  teachers;
   @Prop({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
@@ -41,9 +41,9 @@ export class Group {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Schedule',
-    required: true,
+    required: false,
   })
-  schedule: Schedule;
+  schedule;
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

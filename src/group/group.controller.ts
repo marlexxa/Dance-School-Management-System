@@ -25,12 +25,12 @@ export class GroupController {
     return this.groupService.findOne(id);
   }
 
-  @Get(':advanceLevel')
+  @Get('advanceLevels:advanceLevel')
   findAllByAdvanceLevel(@Param('advanceLevel') advanceLevel: AdvanceLevel) {
     return this.groupService.findAllByAdvanceLevel(advanceLevel);
   }
 
-  @Get(':danceType')
+  @Get('daceTypes:danceType')
   findAllByDanceType(@Param('danceType') danceType: DanceType) {
     return this.groupService.findAllByDanceType(danceType);
   }
@@ -40,15 +40,15 @@ export class GroupController {
     return this.groupService.findAllByTeacherId(teachers);
   }
 
-  @Get(':scheduleId')
-  findOneByScheduleId(@Param('scheduleId') schedule: Schedule) {
+  @Get('schedules/:scheduleId')
+  findOneByScheduleId(@Param('scheduleId') schedule: string) {
     return this.groupService.findOneByScheduleId(schedule);
   }
 
-  // @Get(':studentId')
-  // findAllByStudentId(@Param('studentId') students: string) {
-  //   return this.groupService.findAllByStudentId(students);
-  // }
+  @Get('students/:studentId')
+  findAllByStudentId(@Param('studentId') students: string) {
+    return this.groupService.findAllByStudentId(students);
+  }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
@@ -60,4 +60,3 @@ export class GroupController {
     return this.groupService.remove(id);
   }
 }
-// a reszta endpointów - > wyszukiwanie po teacherze, userze , po type tańca i levelu
