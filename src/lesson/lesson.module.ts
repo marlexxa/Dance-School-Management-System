@@ -4,7 +4,7 @@ import { LessonController } from './lesson.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LessonSchema } from './entities/lesson.entity';
 import { UserSchema } from '../user/entities/user.entity';
-// import { GroupSchema } from 'src/user/entities/user.entity';
+import { GroupSchema } from '../group/entities/group.entity';
 
 @Module({
   imports: [
@@ -20,12 +20,12 @@ import { UserSchema } from '../user/entities/user.entity';
         schema: UserSchema,
       },
     ]),
-    // MongooseModule.forFeature([
-    //   {
-    //     name: 'Group',
-    //     schema: GroupSchema,
-    //   },
-    // ]),
+    MongooseModule.forFeature([
+      {
+        name: 'Group',
+        schema: GroupSchema,
+      },
+    ]),
   ],
 
   controllers: [LessonController],

@@ -22,7 +22,7 @@ export class PassController {
     return this.passService.findAllByUserID(id);
   }
 
-  /*@Get('group/:groupID')
+  /*@Get('groups/:groupID')
   findAllByGroup(@Param('groupID') id: string) {
     return this.passService.findAllByGroupID(id);
   }*/

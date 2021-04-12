@@ -1,6 +1,6 @@
-/* eslint-disable prettier/prettier */
+import { Request } from 'express';
 import { UserInterface } from '../../user/interfaces/user.interface';
-export class CreatePhoneDto {
+
+export interface RequestWithUser extends Request {
   user: UserInterface;
-  phoneNumber: string;
 }
