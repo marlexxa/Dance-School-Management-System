@@ -37,6 +37,11 @@ export class LessonController {
     return this.lessonService.findAllByStudentID(userID);
   }
 
+  @Get('groups/:groupID')
+  findAllByGroupID(@Param('groupID') groupID: string) {
+    return this.lessonService.findAllByGroupID(groupID);
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateLessonDto: UpdateLessonDto) {
     return this.lessonService.update(id, updateLessonDto);
