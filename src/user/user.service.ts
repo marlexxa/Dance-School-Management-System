@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserInterface } from './interfaces/user.interface';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -25,8 +26,18 @@ export class UserService {
     return user;
   }
 
+  async findByEmail(email: string) {
+    const user = await this.userModel.findOne({ mail: email }).exec();
+    if (!user) {
+      throw new HttpException('E-mail Not Found', HttpStatus.NOT_FOUND);
+    }
+    return user;
+  }
+
   async create(createUserDto: CreateUserDto) {
     const user = await new this.userModel(createUserDto);
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
     return user.save();
   }
 
