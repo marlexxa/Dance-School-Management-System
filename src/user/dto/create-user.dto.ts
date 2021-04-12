@@ -8,4 +8,6 @@ export class CreateUserDto {
   password: string;
   gender: Gender;
   role: Role[];
+  comment: string;
+  phoneNumber: string;
 }

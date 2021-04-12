@@ -39,6 +39,18 @@ export class User {
     required: true,
   })
   role: Role[];
+  @Prop({
+    type: String,
+    lowercase: true,
+    required: false,
+  })
+  comment;
+  @Prop({
+    type: String,
+    lowercase: true,
+    required: false,
+  })
+  phoneNumber;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -9,4 +9,6 @@ export interface UserInterface extends Document {
   password: string;
   gender: Gender;
   role: Role[];
+  comment: string;
+  phoneNumber: string;
 }

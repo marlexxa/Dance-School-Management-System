@@ -4,7 +4,6 @@ import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { AdvanceLevel } from './enum/advance-level.enum';
 import { DanceType } from './enum/dance-type.enum';
-import { Schedule } from 'src/schedule/entities/schedule.entity';
 
 @Controller('groups')
 export class GroupController {
@@ -38,11 +37,6 @@ export class GroupController {
   @Get('teachers/:teacherId')
   findAllByTeacherId(@Param('teacherId') teachers: string) {
     return this.groupService.findAllByTeacherId(teachers);
-  }
-
-  @Get('schedules/:scheduleId')
-  findOneByScheduleId(@Param('scheduleId') schedule: string) {
-    return this.groupService.findOneByScheduleId(schedule);
   }
 
   @Get('students/:studentId')

@@ -5,15 +5,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { GroupInterface } from './interfaces/group.interface';
 import { UserInterface } from 'src/user/interfaces/user.interface';
-import { ScheduleInterface } from '../schedule/interfaces/schedule.interface';
 import { User } from '../user/entities/user.entity';
-import { Schedule } from '../schedule/entities/schedule.entity';
 @Injectable()
 export class GroupService {
   constructor(
     @InjectModel('Group') private readonly groupModel: Model<GroupInterface>,
     @InjectModel('User') private readonly userModel: Model<UserInterface>,
-    @InjectModel('Schedule') private readonly scheduleModel: Model<ScheduleInterface>,
   ) {}
 
   async create(createGroupDto: CreateGroupDto) {
@@ -76,20 +73,6 @@ export class GroupService {
       .populate({ path: 'students', model: User, select: '-password' })
       .populate({ path: 'teachers', model: User, select: '-password' })
       .populate('schedule')
-      .exec();
-    if (!groups || !groups[0]) {
-      throw new HttpException('Not Found - findAllByStudentId', HttpStatus.NOT_FOUND);
-    }
-    return groups;
-  }
-
-  async findOneByScheduleId(scheduleId: string) {
-    const groups = await this.groupModel
-      .find()
-      .populate({ path: 'students', model: User, select: '-password' })
-      .populate({ path: 'teachers', model: User, select: '-password' })
-      .populate('schedule')
-      .find({ 'schedule._id': scheduleId })
       .exec();
     if (!groups || !groups[0]) {
       throw new HttpException('Not Found - findAllByStudentId', HttpStatus.NOT_FOUND);

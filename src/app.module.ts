@@ -5,7 +5,6 @@ import { UserModule } from './user/user.module';
 import { GroupModule } from './group/group.module';
 import { PaymentModule } from './payment/payment.module';
 import { PassModule } from './pass/pass.module';
-import { PhoneModule } from './phone/phone.module';
 import { DepositModule } from './deposit/deposit.module';
 import { LessonModule } from './lesson/lesson.module';
 import { ScheduleModule } from './schedule/schedule.module';
@@ -19,7 +18,6 @@ import { AuthModule } from './authentication/auth.module';
     GroupModule,
     PaymentModule,
     PassModule,
-    PhoneModule,
     DepositModule,
     LessonModule,
     ScheduleModule,
