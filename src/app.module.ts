@@ -11,6 +11,7 @@ import { LessonModule } from './lesson/lesson.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { mongoUri } from './config/mongo';
+import { AuthModule } from './authentication/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { mongoUri } from './config/mongo';
     LessonModule,
     ScheduleModule,
     MongooseModule.forRoot(mongoUri),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
