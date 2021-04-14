@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { User } from '../../user/entities/user.entity';
 import { Group } from '../../group/entities/group.entity';
+import { AdvanceLevel } from '../../group/enum/advance-level.enum';
 
 @Schema()
 export class Lesson {
@@ -43,6 +44,13 @@ export class Lesson {
     required: true,
   })
   endTime;
+  @Prop({
+    type: String,
+    enum: AdvanceLevel,
+    lowercase: true,
+    required: true,
+  })
+  classroom;
 }
 
 export const LessonSchema = SchemaFactory.createForClass(Lesson);

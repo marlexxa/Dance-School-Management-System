@@ -22,10 +22,10 @@ export class PassController {
     return this.passService.findAllByUserID(id);
   }
 
-  /*@Get('groups/:groupID')
+  @Get('groups/:groupID')
   findAllByGroup(@Param('groupID') id: string) {
     return this.passService.findAllByGroupID(id);
-  }*/
+  }
 
   @Post()
   create(@Body() createPassDto: CreatePassDto) {

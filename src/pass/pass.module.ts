@@ -4,6 +4,7 @@ import { PassController } from './pass.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Pass, PassSchema } from './entities/pass.entity';
 import { UserSchema } from '../user/entities/user.entity';
+import { GroupSchema } from '../group/entities/group.entity';
 
 @Module({
   imports: [
@@ -17,6 +18,12 @@ import { UserSchema } from '../user/entities/user.entity';
       {
         name: 'User',
         schema: UserSchema,
+      },
+    ]),
+    MongooseModule.forFeature([
+      {
+        name: 'Group',
+        schema: GroupSchema,
       },
     ]),
   ],

@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '../../user/entities/user.entity';
 import * as mongoose from 'mongoose';
+import { PassType } from '../enums/passType.enum';
+import { Gender } from '../../user/enums/gender.enum';
 
 @Schema()
 export class Pass {
@@ -10,11 +12,11 @@ export class Pass {
     required: true,
   })
   user;
-  /* group: {
-         type: mongoose.Schema.Types.ObjectId,
-         ref: 'Group',
-         required: true
-     }*/
+  group: {
+    type: mongoose.Schema.Types.ObjectId;
+    ref: 'Group';
+    required: true;
+  };
   @Prop({
     type: Date,
     required: true,
@@ -35,6 +37,13 @@ export class Pass {
     required: true,
   })
   price;
+  @Prop({
+    type: String,
+    enum: PassType,
+    lowercase: true,
+    required: true,
+  })
+  type;
 }
 
 export const PassSchema = SchemaFactory.createForClass(Pass);

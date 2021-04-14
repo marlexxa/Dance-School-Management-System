@@ -4,10 +4,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ScheduleInterface } from './interfaces/schedule.interface';
 import { Model } from 'mongoose';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { LessonInterface } from '../lesson/interfaces/lesson.interface';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class ScheduleService {
-  constructor(@InjectModel('Schedule') private readonly scheduleModel: Model<ScheduleInterface>) {}
+  constructor(
+    @InjectModel('Schedule') private readonly scheduleModel: Model<ScheduleInterface>,
+    @InjectModel('Lesson') private readonly groupModel: Model<LessonInterface>,
+  ) {}
 
   async create(createScheduleDto: CreateScheduleDto) {
     const schedule = await new this.scheduleModel(createScheduleDto);
@@ -15,7 +20,7 @@ export class ScheduleService {
   }
 
   async findAll() {
-    const schedules = await this.scheduleModel.find().exec();
+    const schedules = await this.scheduleModel.find().populate('lesson').exec();
     if (!schedules || !schedules[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
@@ -30,18 +35,19 @@ export class ScheduleService {
     return schedule;
   }
 
-  async findScheduleByLesson(id: string) {
-    const schedules = await this.scheduleModel.find().exec();
-
-    // schedules.forEach((schedule) => {
-    //   schedule.lessons.forEach((lesson) => {
-    //     if (lesson._id == id) {
-    //       return schedule;
-    //     }
-    //   });
-    // });
-
-    throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+  async findScheduleByLessonID(lessonId: string) {
+    const schedule = await this.scheduleModel
+      .find({
+        lessons: {
+          $elemMatch: { $in: { _id: lessonId } },
+        },
+      })
+      .populate('lesson')
+      .exec();
+    if (!schedule || !schedule[0]) {
+      throw new HttpException('Not Found - findAllByStudentId', HttpStatus.NOT_FOUND);
+    }
+    return schedule;
   }
 
   async update(id: string, updateScheduleDto: UpdateScheduleDto) {

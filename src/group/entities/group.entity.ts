@@ -44,6 +44,11 @@ export class Group {
     required: false,
   })
   schedule;
+  @Prop({
+    type: String,
+    required: false,
+  })
+  comment;
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

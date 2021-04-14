@@ -5,12 +5,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PassInterface } from './interfaces/pass.interface';
 import { UserInterface } from '../user/interfaces/user.interface';
+import { GroupInterface } from '../group/interfaces/group.interface';
 
 @Injectable()
 export class PassService {
   constructor(
     @InjectModel('Pass') private readonly passModel: Model<PassInterface>,
-    @InjectModel('User') private readonly userModel: Model<UserInterface>, //@InjectModel('Group') private  readonly groupModel: Model<GroupInterface>
+    @InjectModel('User') private readonly userModel: Model<UserInterface>,
+    @InjectModel('Group') private readonly groupModel: Model<GroupInterface>,
   ) {}
 
   async findAll(): Promise<PassInterface[]> {
@@ -23,7 +25,7 @@ export class PassService {
   }
 
   async findByID(id: string): Promise<PassInterface> {
-    const pass = await this.passModel.findOne({ _id: id }).populate('user', '-password -gender').exec();
+    const pass = await this.passModel.findOne({ _id: id }).populate('group').populate('user', '-password -gender').exec();
     if (!pass) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
@@ -31,7 +33,7 @@ export class PassService {
   }
 
   async findAllByUserID(userID: string): Promise<PassInterface[]> {
-    const passes = await this.passModel.find().populate('user', '-password -gender').exec();
+    const passes = await this.passModel.find().populate('group').populate('user', '-password -gender').exec();
     let filtered = passes.filter((pass) => {
       return pass.user._id == userID;
     });
@@ -41,26 +43,19 @@ export class PassService {
     return filtered;
   }
 
-  /*async findAllByGroupID(groupId: string): Promise<PassInterface[]> {
-    const passes = await this.passModel
-    .find()
-    .populate('group')
-    .exec()
+  async findAllByGroupID(groupId: string): Promise<PassInterface[]> {
+    const passes = await this.passModel.find().populate('group').populate('user', '-password -gender').exec();
     let filtered = passes.filter((pass) => {
       return pass.group == groupId;
-    })
+    });
     if (!filtered || !filtered[0]) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
-    return filtered
-  }*/
+    return filtered;
+  }
 
   async create(createPassDto: CreatePassDto) {
     const user = await this.userModel.findById(createPassDto.user).exec();
-
-    /*const group = await this.groupModel.findById(createPassDto.group)
-        .exec();*/
-
     if (user) {
       const pass = await new this.passModel(createPassDto);
       return pass.save();
