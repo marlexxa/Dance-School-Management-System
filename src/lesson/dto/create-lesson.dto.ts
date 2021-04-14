@@ -1,5 +1,6 @@
 import { UserInterface } from '../../user/interfaces/user.interface';
 import { GroupInterface } from '../../group/interfaces/group.interface';
+import { Classroom } from '../enums/Classroom.enum';
 
 export class CreateLessonDto {
   date: Date;
@@ -9,4 +10,5 @@ export class CreateLessonDto {
   priceInCash: number;
   startTime: Date;
   endTime: Date;
+  classroom: Classroom;
 }

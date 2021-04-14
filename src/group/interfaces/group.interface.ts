@@ -7,5 +7,6 @@ export interface GroupInterface extends Document {
   teachers: UserInterface[];
   students: UserInterface[];
   maxAmount: number;
-  schedule: ScheduleInterface;
+  schedule?: ScheduleInterface;
+  comment: string;
 }

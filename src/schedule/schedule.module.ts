@@ -3,6 +3,7 @@ import { ScheduleService } from './schedule.service';
 import { ScheduleController } from './schedule.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleSchema } from './entities/schedule.entity';
+import { LessonSchema } from '../lesson/entities/lesson.entity';
 
 @Module({
   imports: [
@@ -10,6 +11,12 @@ import { ScheduleSchema } from './entities/schedule.entity';
       {
         name: 'Schedule',
         schema: ScheduleSchema,
+      },
+    ]),
+    MongooseModule.forFeature([
+      {
+        name: 'Lesson',
+        schema: LessonSchema,
       },
     ]),
   ],
