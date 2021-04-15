@@ -1,4 +1,4 @@
-const isProductionEnv = process.env.NODE_ENV === 'production';
+export const isProductionEnv = process.env.NODE_ENV === 'production';
 
 export const cookieOptions = () => {
   if (!isProductionEnv)
