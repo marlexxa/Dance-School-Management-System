@@ -8,10 +8,8 @@ export const cookieOptions = () => {
       credentials: true,
     };
   return {
-    origin: true,
+    origin: 'https://my-dance-school.herokuapp.com',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
-    sameSite: 'none',
-    secure: true,
   };
 };
