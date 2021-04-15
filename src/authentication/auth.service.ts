@@ -3,6 +3,7 @@ import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { TokenPayload } from './interfaces/tokenPayload.interface';
+import { isProductionEnv } from 'src/config/server.config';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,8 @@ export class AuthService {
       secret: process.env.JWT_SECRET_KEY,
       expiresIn: process.env.JWT_TOKEN_EXPIRESIN,
     });
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${process.env.JWT_TOKEN_EXPIRESIN}s`;
+    if (!isProductionEnv) return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${process.env.JWT_TOKEN_EXPIRESIN}s`;
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${process.env.JWT_TOKEN_EXPIRESIN}s SameSite=None Secure`;
   }
 
   getCookieForLogOut() {
