@@ -3,17 +3,14 @@ import { AppModule } from './app.module';
 import { config } from 'dotenv';
 import * as cookieParser from 'cookie-parser';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { cookieOptions } from './config/server.config';
 
 config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors({
-    origin: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
-  });
+  app.enableCors(cookieOptions());
 
   const options = new DocumentBuilder()
     .setTitle('Dance School')
