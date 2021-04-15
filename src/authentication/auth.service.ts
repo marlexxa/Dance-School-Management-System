@@ -30,7 +30,7 @@ export class AuthService {
       expiresIn: process.env.JWT_TOKEN_EXPIRESIN,
     });
     if (!isProductionEnv) return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${process.env.JWT_TOKEN_EXPIRESIN}s`;
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${process.env.JWT_TOKEN_EXPIRESIN}s SameSite=None Secure`;
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${process.env.JWT_TOKEN_EXPIRESIN}s; SameSite=None; Secure`;
   }
 
   getCookieForLogOut() {
