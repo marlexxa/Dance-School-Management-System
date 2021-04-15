@@ -34,6 +34,7 @@ export class AuthService {
   }
 
   getCookieForLogOut() {
-    return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
+    if (!isProductionEnv) return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
+    return `Authentication=; HttpOnly; Path=/; Max-Age=0; SameSite=None; Secure`;
   }
 }
