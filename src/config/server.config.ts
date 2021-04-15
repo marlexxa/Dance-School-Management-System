@@ -13,5 +13,6 @@ export const cookieOptions = () => {
     credentials: true,
     sameSite: 'none',
     secure: true,
+    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, Authorization',
   };
 };
